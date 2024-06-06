@@ -1,0 +1,3 @@
+DTO
+Chứa các lớp định nghĩa dữ liệu được sử dụng để truyền tải dữ liệu giữa các lớp khác nhau trong dự án.
+Các lớp DTO thường được anotate với annotation @Data.

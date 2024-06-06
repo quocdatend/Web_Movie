@@ -1,0 +1,5 @@
+Common
+Chứa các lớp định nghĩa chung cho toàn bộ dự án, chẳng hạn như:
+Lớp định nghĩa các định dạng ngày giờ
+Lớp định nghĩa các lỗi chung
+Lớp định nghĩa các cấu hình chung

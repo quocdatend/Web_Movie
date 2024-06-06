@@ -1,0 +1,3 @@
+Repository
+Chứa các lớp truy cập dữ liệu từ cơ sở dữ liệu.
+Các lớp repository thường được anotate với annotation @Repository.
