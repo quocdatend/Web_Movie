@@ -1,5 +1,0 @@
-Config
-Chứa các lớp cấu hình cho các thành phần khác nhau trong dự án, chẳng hạn như:
-Lớp cấu hình nguồn dữ liệu
-Lớp cấu hình bảo mật
-Lớp cấu hình beans

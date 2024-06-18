@@ -3,7 +3,7 @@
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
 -->
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> lang="en">
     <head>
         <meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,8 +49,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 							<button><i class="icofont icofont-search"></i></button>
 						</form>
 						<ul>
-							<li><a href="#">Welcome Guest!</a></li>
-							<li><a href="/Login_Signup">Login</a></li>   <!--class="login-popup"--> 
+							<li sec:authorize="!isAuthenticated()">
+								<a href="#">Welcome Guest!</a>
+							</li>
+							<li sec:anthorize="isAuthenticated()">
+								<span sec:authentication="name"></span>
+							</li>
+							<li sec:authorize="!isAuthenticated()">
+								<a sec:authorize="isAnonymous()" href="/Login_Signup">Login</a>
+							</li>
+							<li sec:authorize="isAuthenticated()"> | </li>
+							<li sec:authorize="isAuthenticated()">
+								<a href="/logout">Logout</a>
+							</li>   <!--class="login-popup"-->
 						</ul>
 					</div>
 					<div class="menu-area">
