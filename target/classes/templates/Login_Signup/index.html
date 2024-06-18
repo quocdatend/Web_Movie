@@ -3,7 +3,9 @@
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
 -->
-<html lang="en">
+<html lang="en"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -114,7 +116,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 	<div class="main">  	
 		<input type="checkbox" id="chk" aria-hidden="true">
 			<div class="signup">
-				<form>
+				<form >
 					<label for="chk" aria-hidden="true" style="font-size: 1.6em;">Sign up</label>
 					<input type="text" name="txt" placeholder="User name" required="">
 					<input type="email" name="email" placeholder="Email" required="">
@@ -124,14 +126,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 				</form>
 			</div>
 			<div class="login">
-				<form>
+				<form th:action="@{/Login_Signup}" method="post">
+
 					<label for="chk" aria-hidden="true">Login</label>
-					<input type="email" name="email" placeholder="Email" required="">
-					<input type="password" name="pswd" placeholder="Password" required="">
-					<button>Login</button>
+					<input type="text" name="username" placeholder="Username" required="">
+					<input type="password" name="password" placeholder="Password" required="">
+					<button type="submit">Login</button>
+					<div th:if="${param.error}" style="position: relative;top: 20px;left: 100px;color:red;">
+						<p>Vui Lòng Thử Lại!</p>
+						<p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+					</div>
 				</form>
 			</div>
 	</div>
+	<script>
+	</script>
 </body>
 </html>
 

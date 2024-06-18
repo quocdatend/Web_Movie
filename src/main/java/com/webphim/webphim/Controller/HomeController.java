@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Acer
  */
 @Controller
-@RequestMapping("/Home")
 public class HomeController { 
     
-    @GetMapping("")
+    @GetMapping(value = { "",  "/", "/Home" })
     public String index(){
         return "Home/index";
     }

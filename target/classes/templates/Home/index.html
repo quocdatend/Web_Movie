@@ -33,7 +33,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 	<body>
 		<!-- Page loader -->
 	    <div id="preloader"></div>
-        <div th:replace="Header :: Header"></div>
+        <div th:replace="~{Header :: Header}"></div>
 		<section class="hero-area" id="home">
 			<div class="container">
 				<div class="hero-area-slider">
@@ -630,7 +630,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 				</div>
 			</div>
 		</section><!-- news section end -->
-        <div th:replace="Footer :: Footer"></div>
+        <div th:replace="~{Footer :: Footer}"></div>
 		<!-- jquery main JS -->
 		<script th:src="@{/assets/js/jquery.min.js}"></script>
 		<!-- Bootstrap JS -->
