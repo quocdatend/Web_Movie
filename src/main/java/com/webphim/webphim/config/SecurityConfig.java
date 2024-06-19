@@ -22,23 +22,34 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests(authorize -> authorize
-                        .requestMatchers( "/", "/Home", "/Home/**", "/Login_Signup", "/logout", "/assets/**", "/Blog", "/Blog/**", "/Movies", "/Movies/**", "/css/**", "/img/**", "/scss/**", "/vendor/**").permitAll()
+                        .requestMatchers( "/", "/Home", "/Home/**", "/Login_Signup", "/logout", "/assets/**", "/Blog", "/Blog/**", "/Movies", "/Movies/**","/Signup").permitAll()
                         .requestMatchers("/User/**").hasAnyAuthority("USER")
-                        .requestMatchers("/Admin/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/Admin/**", "/css/**", "/img/**", "/scss/**", "/vendor/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
+
+                //.oauth2Login(o->o.loginPage("/login").defaultSuccessUrl("/products", true)) // Login google , facebook
+
                 .formLogin(formLogin -> formLogin
                         .loginPage("/Login_Signup")
                         .loginProcessingUrl("/Login_Signup")
                         .defaultSuccessUrl("/Home", true)
                         .failureUrl("/Login_Signup?error")
                         .permitAll())
-                .logout((logout) -> logout
+                .logout(logout -> logout
                         .logoutUrl("/Login_Signup/logout") // URL tùy chỉnh để đăng xuất
                         .logoutSuccessUrl("/Home") // URL sau khi đăng xuất thành công
-                        .invalidateHttpSession(true) // Xóa phiên làm việc
+                        .invalidateHttpSession(true) // Hủy phiên làm việc.
+                        .clearAuthentication(true) // Xóa xác thực.
                         .deleteCookies("JSESSIONID")
                         .permitAll())
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedPage("/403") // Trang báo lỗi khi truy cập không được phép.
+                )
+                .sessionManagement(sessionManagement -> sessionManagement
+                        .maximumSessions(1) // Giới hạn số phiên đăng nhập.
+                        .expiredUrl("/login") // Trang khi phiên hết hạn.
+                )
                 .httpBasic(withDefaults())
                 .authenticationProvider(authenticationProvider());
         return http.build();

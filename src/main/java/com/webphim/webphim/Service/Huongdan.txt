@@ -1,3 +1,0 @@
-Service
-Chứa các lớp thực hiện logic nghiệp vụ của ứng dụng.
-Các lớp service thường được anotate với annotation @Service.
