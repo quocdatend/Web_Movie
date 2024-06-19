@@ -116,18 +116,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 	<div class="main">  	
 		<input type="checkbox" id="chk" aria-hidden="true">
 			<div class="signup">
-				<form >
+				<form th:action="@{/Signup}" method="post" >
 					<label for="chk" aria-hidden="true" style="font-size: 1.6em;">Sign up</label>
-					<input type="text" name="txt" placeholder="User name" required="">
-					<input type="email" name="email" placeholder="Email" required="">
-					<input type="password" name="pswd" placeholder="Password" required="">
-					<input type="number" name="phone" placeholder="Phone" required="">
-					<button>Sign up</button>
+					<div th:if="${successMessage}" style="color: #0af80a;position: absolute;top: 30px;left: 105px;">
+						<p th:text="${successMessage}"></p>
+					</div>
+					<input type="text" id="username" name="username" placeholder="User name" required="">
+					<input type="email" id="email" name="email" placeholder="Email" required="">
+					<input type="password" id="password" name="password" placeholder="Password" required="">
+					<input type="text" id="phone" name="phone" placeholder="Phone" required="">
+					<button type="submit">Sign up</button>
+
 				</form>
 			</div>
 			<div class="login">
 				<form th:action="@{/Login_Signup}" method="post">
-
 					<label for="chk" aria-hidden="true">Login</label>
 					<input type="text" name="username" placeholder="Username" required="">
 					<input type="password" name="password" placeholder="Password" required="">
