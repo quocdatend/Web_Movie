@@ -50,7 +50,7 @@ public class LoginSignupController {
             return "Login_Signup/index";
         }
         Optional<Users> checkUserName = usersService.findUserByUsername(username);
-        if(checkUserName != null) {
+        if(!checkUserName.isEmpty()) {
             model.addAttribute("failMessage", "Username đã tồn tại!");
             return "Login_Signup/index";
         }

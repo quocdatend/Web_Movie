@@ -8,10 +8,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,5 +54,18 @@ public class UsersService {
                 .setParameter("password", passwordEncoder.encode(password))
                 .setParameter("id", id)
                 .executeUpdate();
+    }
+    public Page<Users> GetAll(int pageNo, int pageSize) {
+        PageRequest pageRequest =PageRequest.of(pageNo,pageSize);
+        return usersRepository.findAll(pageRequest);
+    }
+    public void deleteUserById(int id) {
+        if (!usersRepository.existsById(id)) {
+            throw new IllegalStateException("Product with ID " + id + " does not exist.");
+        }
+        usersRepository.deleteById(id);
+    }
+    public Users addUser(Users product) {
+        return usersRepository.save(product);
     }
 }
