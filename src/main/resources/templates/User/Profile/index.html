@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moviepoint - Online Movie,Vedio and TV Show HTML Template</title>
+  <!-- Favicon Icon -->
+  <link rel="icon" type="image/png" th:href="@{/assets/img/favcion.png}" />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/bootstrap.min.css}" media="all" />
+  <!-- Slick nav CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/slicknav.min.css}" media="all" />
+  <!-- Iconfont CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/icofont.css}" media="all" />
+  <!-- Owl carousel CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/owl.carousel.css}">
+  <!-- Popup CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/magnific-popup.css}">
+  <!-- Main style CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}" media="all" />
+  <!-- Responsive CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/responsive.css}" media="all" />
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<!-- Page loader -->
+<div id="preloader"></div>
+<div th:replace="~{Header :: Header}"></div>
+<!-- breadcrumb area start -->
+<section class="breadcrumb-area">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb-area-content">
+          <h1>Profile User Detalied Page</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- breadcrumb area end -->
+<!-- transformers area start -->
+<section class="transformers-area" style="margin-bottom: 44px;">
+  <div class="container">
+    <div class="transformers-box">
+      <div class="row flexbox-center">
+        <div class="col-lg-5 text-lg-left text-center">
+          <div class="transformers-content">
+            <img th:src="@{/assets/img/slide2.png}" alt="about" />
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="transformers-content">
+            <h2>Thông tin tài khoản</h2>
+            <p>3D | Animation | Action | Sci-Fi</p>
+            <ul>
+              <li>
+                <div class="transformers-left">
+                  Tên tài khoản:
+                </div>
+                <div class="transformers-right">
+                  <span  th:text="${user.username}"></span>
+                </div>
+              </li>
+              <li>
+                <div class="transformers-left">
+                  Email:
+                </div>
+                <div class="transformers-right" >
+                  <span th:text="${user.email}"></span>
+                </div>
+              </li>
+              <li>
+                <div class="transformers-left">
+                  Số điện thoại:
+                </div>
+                <div class="transformers-right" >
+                  <span th:text="${user.phone}"></span>
+                </div>
+              </li>
+              <li>
+                <div class="transformers-left">
+                  Premium:
+                </div>
+                <div class="transformers-right">
+                  <span>Chưa có</span>
+                </div>
+              </li>
+              <li>
+                <div class="transformers-left">
+                  Avatar:
+                </div>
+                <div class="transformers-right">
+                  <a href="#" class="theme-btn">Upload</a>
+                </div>
+              </li>
+              <li>
+                <div class="transformers-left">
+                  History:
+                </div>
+                <div class="transformers-right">
+                  <span style="padding-right:40px">ID</span><span style="padding-right:40px">Name</span><span>Time</span></br>
+                  <span style="padding-right:40px">ID</span><span style="padding-right:40px">Name</span><span>Time</span></br>
+                  <span style="padding-right:40px">ID</span><span style="padding-right:40px">Name</span><span>Time</span></br>
+                </div>
+              </li>
+              <li>
+                <div class="transformers-left">
+                  Share:
+                </div>
+                <div class="transformers-right">
+                  <a href="#"><i class="icofont icofont-social-facebook"></i></a>
+                  <a href="#"><i class="icofont icofont-social-twitter"></i></a>
+                  <a href="#"><i class="icofont icofont-social-google-plus"></i></a>
+                  <a href="#"><i class="icofont icofont-youtube-play"></i></a>
+                </div>
+              </li>
+              <li>
+                <div class="transformers-left">
+                  <span><a href="/ForgetPass" style="text-decoration:underline;">Quên mật khẩu?</a></span>
+                </div>
+                <div class="transformers-right">
+
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <a href="#" class="theme-btn"><i class="icofont icofont-ticket"></i> BUY PREMIUM</a>
+    </div>
+  </div>
+</section><!-- transformers area end -->
+<div th:replace="~{Footer :: Footer}"></div>
+<!-- jquery main JS -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<!-- Bootstrap JS -->
+<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+<!-- Slick nav JS -->
+<script th:src="@{/assets/js/jquery.slicknav.min.js}"></script>
+<!-- owl carousel JS -->
+<script th:src="@{/assets/js/owl.carousel.min.js}"></script>
+<!-- Popup JS -->
+<script th:src="@{/assets/js/jquery.magnific-popup.min.js}"></script>
+<!-- Isotope JS -->
+<script th:src="@{/assets/js/isotope.pkgd.min.js}"></script>
+<!-- main JS -->
+<script th:src="@{/assets/js/main.js}"></script>
+</body>
+
+</html>

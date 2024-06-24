@@ -48,6 +48,7 @@ public class UsersService {
     public Optional<Users> findUserByUsername(String username) {
         return usersRepository.findByUsername(username);
     }
+    public Users getUserByUsername(String  username) {return usersRepository.getUserByUsername(username);}
     @Transactional
     public void setPassUserById(Long id, String password) {
         entityManager.createQuery("UPDATE Users SET password = :password WHERE id = :id")

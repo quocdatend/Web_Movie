@@ -1,5 +1,6 @@
 package com.webphim.webphim.config;
 
+import com.cloudinary.Cloudinary;
 import com.webphim.webphim.Service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -22,7 +26,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests(authorize -> authorize
-                        .requestMatchers( "/", "/Home", "/Home/**", "/Login_Signup", "/logout", "/assets/**", "/Blog/**", "/Movies", "/Movies/**","/Signup", "/ForgetPass","/ForgetPass/**").permitAll()
+                        .requestMatchers( "/", "/Home", "/Home/**", "/Login_Signup", "/logout", "/assets/**", "/Blog/**", "/Movies", "/Movies/**","/Signup", "/ForgetPass","/ForgetPass/**",  "/UploadImage").permitAll()
                         .requestMatchers("/User/**").hasAnyAuthority("USER")
                         .requestMatchers("/Admin/**", "/css/**", "/img/**", "/scss/**", "/vendor/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated()
@@ -57,9 +61,6 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService uds;
 
-    //@Autowired
-    //private CustomUAdminDetailsService ads;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -72,4 +73,5 @@ public class SecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
+
 }
