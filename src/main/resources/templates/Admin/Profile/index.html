@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Quản lý account</title>
+  <!-- Custom fonts for this template -->
+  <link
+          th:href="@{/vendor/fontawesome-free/css/all.min.css}"
+          rel="stylesheet"
+          type="text/css"
+  />
+  <link
+          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet"
+  />
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" />
+  <!-- Custom styles for this page -->
+  <link
+          th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
+          rel="stylesheet"
+  />
+  <style>
+      .active .page-link {
+        background-color: #ccc
+      }
+    </style>
+</head>
+
+<body id="page-top">
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <!-- Sidebar -->
+  <section th:replace="~{Admin/Navbar :: Navbar}">
+
+  </section>
+  <!-- End of Sidebar -->
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Main Content -->
+    <div id="content">
+      <!-- Topbar -->
+      <section th:replace="~{Admin/Header :: Header}">
+
+      </section>
+      <!-- End of Topbar -->
+      <!-- Begin Page Content -->
+      <div class="container-fluid">
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Thông Tin Tài Khoản</h1>
+        <section class="container mt-5">
+          <form th:action="@{/Admin/Profile}" th:each="admin : ${AdminProfile}"  method="post">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username:</label>
+              <input type="text" name="username" th:value="${admin.username}" class="form-control" id="username"
+                      required >
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password:</label>
+              <input type="password" th:value="${admin.password}" class="form-control" id="password"
+                     required disabled>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input type="email" name="email" th:value="${admin.email}" class="form-control" id="email"
+                     required >
+            </div>
+            <button type="submit" class="btn btn-primary">SAVE</button>
+            <a th:href="@{/Admin}" class="btn btn-link">Quên mật khẩu?</a></br>
+            <a th:href="@{/Admin}" class="btn btn-link">Back To Admin Page</a>
+            <div th:if="${backToLogin}" style="color: red; padding-top:20px;">
+              <a class="btn btn-primary" th:text="${backToLogin}" href="/logout"></a>
+            </div>
+            <div th:if="${failMessage}" style="color: red; padding-top:20px;">
+              <p th:text="${failMessage}"></p>
+            </div>
+            <div th:if="${successMessage}" style="color: green; padding-top:20px;">
+              <p th:text="${successMessage}"></p>
+            </div>
+          </form>
+        </section>
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- End of Main Content -->
+  </div>
+</div>
+<!-- Bootstrap core JavaScript-->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+<!-- Page level custom scripts -->
+<script th:src="@{/js/demo/datatables-demo.js}"></script>
+
+</body>
+</html>

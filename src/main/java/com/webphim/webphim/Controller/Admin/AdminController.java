@@ -1,10 +1,16 @@
 package com.webphim.webphim.Controller.Admin;
 
+import com.webphim.webphim.Model.Admin;
 import com.webphim.webphim.Model.Users;
+import com.webphim.webphim.Reponsitory.AdminRepository;
+import com.webphim.webphim.Service.AdminService;
+import com.webphim.webphim.Service.EmailService;
 import com.webphim.webphim.Service.UsersService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +22,11 @@ import java.util.Optional;
 @RequestMapping("/Admin")
 public class AdminController {
     @Autowired
+    private AdminService adminService;
+    @Autowired
     private UsersService usersService;
+    @Autowired
+    private EmailService emailService;
     @GetMapping("")
     public String index(){
         return "Admin/index";
@@ -61,4 +71,81 @@ public class AdminController {
         model.addAttribute("successMessage", "Đăng ký thành công!");
         return "Admin/User/AddUser";
     }
+    @GetMapping("/Profile")
+    public String showProfileAdmin(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        Admin admin = adminService.getAdminByUsername(userDetails.getUsername());
+        model.addAttribute("AdminProfile", admin);
+        return "Admin/Profile/index";
+    }
+    @PostMapping("/Profile")
+    public String editProfileAdmin(Model model, @AuthenticationPrincipal UserDetails userDetails,
+                                   @RequestParam String username, @RequestParam String email) {
+        Admin adminSession = adminService.getAdminByUsername(userDetails.getUsername());
+        Admin checkEmail = adminService.getAdminByEmail(email);
+        Admin checkUsername = adminService.getAdminByUsername(username);
+        // Trùng username và email ban đầu
+        if(checkUsername != null && checkEmail != null) {
+            if(checkUsername.getId() == adminSession.getId() && checkEmail.getId() == adminSession.getId()) {
+                Admin admin = adminService.getAdminByUsername(userDetails.getUsername());
+                model.addAttribute("AdminProfile", admin);
+                return "Admin/Profile/index";
+            }
+            if(checkEmail.getId() != adminSession.getId() && checkUsername.getId() != adminSession.getId()) {
+                    Admin admin = adminService.getAdminByUsername(userDetails.getUsername());
+                    model.addAttribute("failMessage", "Username và Email đã tồn tại!");
+                    model.addAttribute("AdminProfile", admin);
+                    return "Admin/Profile/index";
+            }
+            if(checkEmail.getId() == adminSession.getId() && checkUsername.getId() != adminSession.getId()) {
+                Admin admin = adminService.getAdminByUsername(userDetails.getUsername());
+                model.addAttribute("failMessage", "Username đã tồn tại!");
+                model.addAttribute("AdminProfile", admin);
+                return "Admin/Profile/index";
+            }
+            if(checkEmail.getId() != adminSession.getId() && checkUsername.getId() == adminSession.getId()) {
+                Admin admin = adminService.getAdminByUsername(userDetails.getUsername());
+                model.addAttribute("failMessage", "Email đã tồn tại!");
+                model.addAttribute("AdminProfile", admin);
+                return "Admin/Profile/index";
+            }
+        }
+        if(checkUsername == null && checkEmail != null) {
+            if(checkEmail.getId() == adminSession.getId()) {
+                adminService.setAdminByIdUsername(adminSession.getId(), username);
+                emailService.editAccountAdmin(adminSession.getEmail(),username);
+                Admin admin = adminService.getAdminByUsername(username);
+                model.addAttribute("successMessage", "Lưu thay đổi thành công");
+                model.addAttribute("AdminProfile", admin);
+                model.addAttribute("backToLogin", "Đăng nhập lại để tiếp tục!");
+            } else {
+                Admin admin = adminService.getAdminByUsername(userDetails.getUsername());
+                model.addAttribute("failMessage", "Email đã tồn tại!");
+                model.addAttribute("AdminProfile", admin);
+            }
+            return "Admin/Profile/index";
+        }
+        if(checkUsername != null && checkEmail == null) {
+            if(checkUsername.getId() == adminSession.getId()) {
+                adminService.setAdminByIdEmail(adminSession.getId(), email);
+                emailService.editAccountAdmin(email, adminSession.getUsername());
+                Admin admin = adminService.getAdminByUsername(checkUsername.getUsername());
+                model.addAttribute("successMessage", "Lưu thay đổi thành công");
+                model.addAttribute("AdminProfile", admin);
+                model.addAttribute("backToLogin", "Đăng nhập lại để tiếp tục!");
+            } else {
+                Admin admin = adminService.getAdminByUsername(userDetails.getUsername());
+                model.addAttribute("failMessage", "Username đã tồn tại!");
+                model.addAttribute("AdminProfile", admin);
+            }
+            return "Admin/Profile/index";
+        }
+        adminService.setAdminByIdUsernameEmail(adminSession.getId(), username, email);
+        emailService.editAccountAdmin(email, username);
+        Admin admin = adminService.getAdminByUsername(username);
+        model.addAttribute("successMessage", "Lưu thay đổi thành công");
+        model.addAttribute("AdminProfile", admin);
+        model.addAttribute("backToLogin", "Đăng nhập lại để tiếp tục!");
+        return "Admin/Profile/index";
+    }
+
 }
