@@ -24,4 +24,13 @@ public class EmailService {
         int max = 9999;
         return random.nextInt(max - min + 1) + min;
     }
+    public void editAccountAdmin(String email, String username) {
+        String subject = "Thông Tin Tài khoản Admin Web xem phim";
+        String body = "Thông tin tài khoản Admin\n" +
+                    "Username :" + username + "\n" +
+                    "Email: " + email + "\n" +
+                    "Vui lòng truy cập đường link sau " + "http://localhost:8090/Login_Signup" + " để đăng nhập lại trang web.\n" +
+                    "Trân Trọng.";
+        this.sendEmail(email,subject,body);
+    }
 }
