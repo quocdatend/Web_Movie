@@ -2,8 +2,12 @@ package com.webphim.webphim.Model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,10 +32,12 @@ public class Users implements UserDetails {
     @Column(nullable = false, length = 20)
     private String username;
     @Column(nullable = false, length = 255)
+    @Email
     private String email;
     @Column(nullable = false, length = 255)
     private String password;
     @Column(nullable = false, length = 11)
+
     private String phone;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "UserRole",

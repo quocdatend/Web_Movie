@@ -16,7 +16,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 		<!-- Slick nav CSS -->
 		<link rel="stylesheet" type="text/css" th:href="@{/assets/css/slicknav.min.css}" media="all" />
 		<!-- Iconfont CSS -->
-		<link rel="stylesheet" type="text/css" th:href="@{/assets/css/icofont.css}}" media="all" />
+		<link rel="stylesheet" type="text/css" th:href="@{/assets/css/icofont.css}" media="all" />
 		<!-- Owl carousel CSS -->
 		<link rel="stylesheet" type="text/css" th:href="@{/assets/css/owl.carousel.css}">
 		<!-- Popup CSS -->
@@ -50,15 +50,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 						</form>
 						<ul>
 							<li sec:authorize="!isAuthenticated()">
-								<a href="#">Welcome Guest!</a>
+								<span>Welcome Guest!</span>
 							</li>
-							<li sec:anthorize="isAuthenticated()">
-								<span sec:authentication="name"></span>
+							<li sec:anthorize="isAuthenticated()" sec:authorize="!isAnonymous()" >
+								<a sec:authentication="name" href="/User/Profile"></a>
 							</li>
+							<li> | </li>
 							<li sec:authorize="!isAuthenticated()">
 								<a sec:authorize="isAnonymous()" href="/Login_Signup">Login</a>
 							</li>
-							<li sec:authorize="isAuthenticated()"> | </li>
+
 							<li sec:authorize="isAuthenticated()">
 								<a href="/logout">Logout</a>
 							</li>   <!--class="login-popup"-->
