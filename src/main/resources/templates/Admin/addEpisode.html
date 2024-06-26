@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Episode</title>
+    <!-- Các đường dẫn đến các tài nguyên CSS -->
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/sb-admin-2.min.css}" />
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Add New Episode for Movie: <span th:text="${movie.name}"></span></h3>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/AdminMovies/addEpisode}" th:object="${episode}" method="post">
+                <input type="hidden" name="movieId" th:value="${movie.id}" />
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" th:field="*{name}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Slug:</label>
+                    <input type="text" th:field="*{slug}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Content:</label>
+                    <textarea th:field="*{contentEpisode}" class="form-control" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Embed Link:</label>
+                    <input type="text" th:field="*{linkEmbed}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>M3U8 Link:</label>
+                    <input type="text" th:field="*{linkM3u8}" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Save Episode</button>
+            </form>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Episode Name</th>
+                    <th>Slug</th>
+                    <th>contentEpisode</th>
+                    <th>linkEmbed</th>
+                    <th>linkM3u8</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="episode : ${episodes}">
+                    <td th:text="${episode.name}"></td>
+                    <td th:text="${episode.slug}"></td>
+                    <td th:text="${episode.contentEpisode}"></td>
+                    <td th:text="${episode.linkEmbed}"></td>
+                    <td th:text="${episode.linkM3u8}"></td>
+                    <td>
+                        <a th:href="@{/AdminEpisodes/edit/{episodeId}(episodeId=${episode.episodeId})}" class="btn btn-sm btn-primary">Edit</a>
+                        <a th:href="@{/AdminEpisodes/delete/{episodeId}(episodeId=${episode.episodeId})}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a th:href="@{/AdminMovies/edit/{movieId}(movieId=${movie.id})}" class="btn btn-secondary">Back to Movie Detail</a>
+        </div>
+    </div>
+</div>
+
+<!-- Các đường dẫn đến các tài nguyên JavaScript -->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+</body>
+</html>

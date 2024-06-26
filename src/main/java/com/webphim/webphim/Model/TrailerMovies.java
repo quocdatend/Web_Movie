@@ -14,16 +14,14 @@ import java.sql.Time;
 public class TrailerMovies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int trailerId;
+    private Long trailerId;
 
     @Column(length = 255)
     private String trailerUrl;
 
-    @Column
-    private Time time;
 
     @ManyToOne
-    @JoinColumn(name = "movieId", nullable = false)
+    @JoinColumn(name = "movie_id", nullable = false)
     private Movies movie;
 
     // Getters and setters

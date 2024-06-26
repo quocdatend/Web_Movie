@@ -18,7 +18,7 @@ public class WatchHistory {
     private int watchId;
 
     @ManyToOne
-    @JoinColumn(name = "movieId", nullable = false)
+    @JoinColumn(name = "movie_id", nullable = false)
     private Movies movie;
 
     @Column(precision = 2, scale = 2)

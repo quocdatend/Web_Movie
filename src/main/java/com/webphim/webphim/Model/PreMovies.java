@@ -19,5 +19,6 @@ public class PreMovies {
     @Column(nullable = false)
     private boolean isPre;
 
+
     // Getters and setters
 }

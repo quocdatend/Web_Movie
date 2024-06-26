@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -22,6 +22,7 @@
       href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet" />
@@ -235,7 +236,7 @@
             <div class="card shadow mb-4">
               <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">
-                  DataTables Example
+                  <a href="/AdminMovies/add"> ADD MOVIES</a>
                 </h6>
               </div>
               <div class="card-body">
@@ -248,49 +249,69 @@
                   >
                     <thead>
                       <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Age</th>
-                        <th>Start date</th>
-                        <th>Salary</th>
+                        <th>ACTION</th>
+                        <th>NAME</th>
+                        <th>TYPE</th>
+                        <th>TIME</th>
+                        <th>QUALITY</th>
+                        <th>YEAR</th>
+                        <th>COUNTRY</th>
+                        <th>EPISODE C/T</th>
+                        <th>PRE MOVIE</th>
+                        <th>DIRECTOR</th>
+                        <th>IMAGE</th>
+                        <th>CATEGROY</th>
+                        <th>ACTOR</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Age</th>
-                        <th>Start date</th>
-                        <th>Salary</th>
+                        <th>ACTION</th>
+                        <th>NAME</th>
+                        <th>TYPE</th>
+                        <th>TIME</th>
+                        <th>QUALITY</th>
+                        <th>YEAR</th>
+                        <th>COUNTRY</th>
+                        <th>EPISODE C/T</th>
+                        <th>PRE MOVIE</th>
+                        <th>DIRECTOR</th>
+                        <th>IMAGE</th>
+                        <th>CATEGROY</th>
+                        <th>ACTOR</th>
                       </tr>
                     </tfoot>
                     <tbody>
-                      <tr>
-                        <td>Tiger Nixon</td>
-                        <td>System Architect</td>
-                        <td>Edinburgh</td>
-                        <td>61</td>
-                        <td>2011/04/25</td>
-                        <td>$320,800</td>
-                      </tr>
-                      <tr>
-                        <td>Garrett Winters</td>
-                        <td>Accountant</td>
-                        <td>Tokyo</td>
-                        <td>63</td>
-                        <td>2011/07/25</td>
-                        <td>$170,750</td>
-                      </tr>
-                      <tr>
-                        <td>Ashton Cox</td>
-                        <td>Junior Technical Author</td>
-                        <td>San Francisco</td>
-                        <td>66</td>
-                        <td>2009/01/12</td>
-                        <td>$86,000</td>
-                      </tr>
+                    <tr th:each="movie : ${movies}">
+                      <td>
+                        <a class="btn btn-warning" th:href="@{/AdminMovies/edit/{id}(id=${movie.id})}">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger" th:href="@{/AdminMovies/delete/{id}(id=${movie.id})}">
+                          <i class="fas fa-trash-alt"></i>
+                        </a>
+                      </td>
+                      <td th:text="${movie.name}"></td>
+<!--                      <td th:text="${movie.originName}"></td>-->
+<!--                      <td th:text="${movie.contentMovies}"></td>-->
+                      <td th:text="${movie.typeMovies}"></td>
+                      <td th:text="${movie.timeMovies}"></td>
+                      <td th:text="${movie.qualityName}"></td>
+                      <td th:text="${movie.year}"></td>
+                      <td th:text="${movie.countryName}"></td>
+<!--                      <td th:text="${movie.slug}"></td>-->
+                      <td th:text="${movie.episodeCurrent} +'/'+ ${movie.episodeTotal}" ></td>
+                      <td></td>
+                      <td th:text="${movie.directorName}"></td>
+                      <td th:text="${movie.id}"></td>
+                      <td></td>
+                      <td>
+                        <ul>
+                          <li th:each="actor : ${movie.actors}" th:text="${actor.actorName}"></li>
+                        </ul>
+                      </td>
+
+                    </tr>
                     </tbody>
                   </table>
                 </div>
@@ -360,20 +381,20 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script th:src="@{js/sb-admin-2.min.js}"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script th:src="@{vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script th:src="@{js/demo/datatables-demo.js}"></script>
   </body>
 </html>

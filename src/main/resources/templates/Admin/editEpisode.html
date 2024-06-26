@@ -1,0 +1,36 @@
+<!-- editEpisode.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chỉnh sửa Tập phim</title>
+</head>
+<body>
+<h1>Chỉnh sửa Tập phim</h1>
+
+<form th:action="@{/AdminMovies/updateEpisode/{episodeId}(episodeId=${episode.episodeId})}" method="post">
+    <input type="hidden" th:field="*{movie}" value="${episode.movie}" />
+
+    <label for="name">Tên Tập phim:</label>
+    <input type="text" id="name" name="name" th:value="${episode.name}" required><br>
+
+    <label for="slug">Slug:</label>
+    <input type="text" id="slug" name="slug" th:value="${episode.slug}" required><br>
+
+    <label for="contentEpisode">Nội dung Tập phim:</label><br>
+    <textarea id="contentEpisode" name="contentEpisode" rows="4" cols="50" th:text="${episode.contentEpisode}"></textarea><br>
+
+    <label for="linkEmbed">Link Embed:</label>
+    <input type="text" id="linkEmbed" name="linkEmbed" th:value="${episode.linkEmbed}"><br>
+
+    <label for="linkM3u8">Link M3U8:</label>
+    <input type="text" id="linkM3u8" name="linkM3u8" th:value="${episode.linkM3u8}"><br>
+
+    <button type="submit">Cập nhật</button>
+</form>
+
+<a th:href="@{/AdminMovies">Quay lại</a>
+</body>
+</html>

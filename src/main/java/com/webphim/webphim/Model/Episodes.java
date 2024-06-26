@@ -14,11 +14,7 @@ import java.sql.Time;
 public class Episodes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int episodeId;
-
-    @ManyToOne
-    @JoinColumn(name = "moviesId", nullable = false)
-    private Movies movies;
+    private Long episodeId;
 
     @Column(nullable = false, length = 10)
     private String name;
@@ -35,6 +31,8 @@ public class Episodes {
     @Column(length = 255)
     private String linkM3u8;
 
-    // Getters and setters
+    @ManyToOne
+    @JoinColumn(name = "movie_id", nullable = false)
+    private Movies movie;
 }
 

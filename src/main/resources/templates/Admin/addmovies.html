@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Quản lý phim</title>
+    <!-- Phông chữ tùy chỉnh cho mẫu này -->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}" rel="stylesheet" />
+    <!-- Kiểu tùy chỉnh cho mẫu này -->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" />
+    <!-- Kiểu tùy chỉnh cho trang này -->
+    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
+</head>
+<body id="page-top">
+<!-- Trình bao bọc trang -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Thương hiệu Sidebar -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-laugh-wink"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Quản lý Web Xem Phim</div>
+        </a>
+        <!-- Ngăn cách -->
+        <hr class="sidebar-divider" />
+        <!-- Mục Nav - Bảng -->
+        <li class="nav-item active">
+            <a class="nav-link" href="Account.html">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Quản lý Tài khoản</span></a>
+        </li>
+        <!-- Ngăn cách -->
+        <hr class="sidebar-divider d-none d-md-block" />
+        <li class="nav-item active">
+            <a class="nav-link" href="Movie.html">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Quản lý Phim</span></a>
+        </li>
+        <!-- Ngăn cách -->
+        <hr class="sidebar-divider d-none d-md-block" />
+        <!-- Chuyển đổi Sidebar (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+    </ul>
+    <!-- Kết thúc Sidebar -->
+    <!-- Trình bao bọc nội dung -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Nội dung chính -->
+        <div id="content">
+            <!-- Thanh điều hướng trên cùng -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <!-- Chuyển đổi Sidebar (Topbar) -->
+                <form class="form-inline">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </form>
+                <!-- Tìm kiếm Topbar -->
+                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm..." aria-label="Tìm kiếm" aria-describedby="basic-addon2" />
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <!-- Nav Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Mục Nav - Tìm kiếm Dropdown (Chỉ hiển thị XS) -->
+                    <li class="nav-item dropdown no-arrow d-sm-none">
+                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <!-- Dropdown - Tin nhắn -->
+                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                            <form class="form-inline mr-auto w-100 navbar-search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm..." aria-label="Tìm kiếm" aria-describedby="basic-addon2" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                    <!-- Mục Nav - Cảnh báo -->
+                    <!-- Mục Nav - Tin nhắn -->
+                    <!-- Mục Nav - Thông tin người dùng -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                            <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
+                        </a>
+                        <!-- Dropdown - Thông tin người dùng -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Hồ sơ
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Cài đặt
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Nhật ký hoạt động
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Đăng xuất
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <!-- Kết thúc Thanh điều hướng trên cùng -->
+            <!-- Bắt đầu Nội dung Trang -->
+            <div class="container-fluid">
+                <!-- Tiêu đề Trang -->
+                <h1 class="h3 mb-2 text-gray-800">ADD MOVIE</h1>
+                <form th:action="@{/AdminMovies/add}" th:object="${movie}" method="post" enctype="multipart/form-data">
+                    <div>
+                        <label>Name:</label>
+                        <input type="text" th:field="*{name}" required="required" maxlength="255"/>
+                    </div>
+                    <div>
+                        <label>Origin Name:</label>
+                        <input type="text" th:field="*{originName}" required="required" maxlength="255"/>
+                    </div>
+                    <div>
+                        <label>Content:</label>
+                        <textarea th:field="*{contentMovies}" required="required"></textarea>
+                    </div>
+                    <div>
+                        <label>Type:</label>
+                        <input type="text" th:field="*{typeMovies}" required="required" maxlength="15"/>
+                    </div>
+                    <div>
+                        <label>Time (in minutes):</label>
+                        <input type="number" th:field="*{timeMovies}" required="required"/>
+                    </div>
+                    <div>
+                        <label>Quality:</label>
+                        <input type="text" th:field="*{qualityName}" required="required" maxlength="8"/>
+                    </div>
+                    <div>
+                        <label>Year:</label>
+                        <input type="text" th:field="*{year}" required="required" maxlength="4"/>
+                    </div>
+                    <div>
+                        <label>Country:</label>
+                        <input type="text" th:field="*{countryName}" required="required" maxlength="56"/>
+                    </div>
+                    <div>
+                        <label>Slug:</label>
+                        <input type="text" th:field="*{slug}" required="required" maxlength="255"/>
+                    </div>
+                    <div>
+                        <label>Director:</label>
+                        <input type="text" th:field="*{directorName}" required="required" maxlength="75"/>
+                    </div>
+                    <div>
+                        <label>Total Episodes:</label>
+                        <input type="number" th:field="*{episodeTotal}" required="required"/>
+                    </div>
+                    <div>
+                        <label>Current Episodes:</label>
+                        <input type="number" th:field="*{episodeCurrent}"/>
+                    </div>
+
+
+                    <!-- Trong trang HTML của bạn, ví dụ Movies.html -->
+                    <label for="trailerUrl">Trailer URL:</label>
+                    <input type="text" id="trailerUrl" name="trailerUrl" required>
+                    <label for="posterUrl">Poster URL:</label>
+                    <input type="text" id="posterUrl" name="posterUrl" required>
+                    <label for="thumbUrl">Thumb URL:</label>
+                    <input type="text" id="thumbUrl" name="thumbUrl" required>
+
+                    <div th:each="actor, iterStat : ${movie.actors}">
+                        <div>
+                            <label>Actor Name:</label>
+                            <input type="text" th:field="*{actors[__${iterStat.index}__].actorName}" required="required"/>
+                        </div>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- Kết thúc Nội dung chính -->
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Thiết Kế Bởi Nhóm 3 Môn Lập Trình Java</span>
+                </div>
+            </div>
+        </footer>
+        <!-- Kết thúc Footer -->
+    </div>
+    <!-- Kết thúc Trình bao bọc nội dung -->
+</div>
+<!-- Kết thúc Trình bao bọc trang -->
+<!-- Nút cuộn lên -->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+<!-- Modal Đăng xuất -->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sẵn sàng rời đi?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Chọn "Đăng xuất" dưới đây nếu bạn sẵn sàng kết thúc phiên hiện tại.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+                <a class="btn btn-primary" href="login.html">Đăng xuất</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- JavaScript cốt lõi Bootstrap -->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- JavaScript plugin cốt lõi -->
+<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+<!-- Tập lệnh tùy chỉnh cho tất cả các trang -->
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+<!-- Các plugin cấp trang -->
+<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<!-- Tập lệnh tùy chỉnh cấp trang -->
+<script th:src="@{/js/demo/datatables-demo.js}"></script>
+</body>
+</html>
