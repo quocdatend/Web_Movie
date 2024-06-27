@@ -45,6 +45,18 @@ public class UsersService {
                 }
         );
     }
+    public void setPremiumRole(String username) {
+        usersRepository.findByUsername(username).ifPresentOrElse(
+                user -> {
+                    user.getRoles().add(roleRepository.findRoleById(Role.PRE.value));
+                    user.getRoles().remove(roleRepository.findRoleById(Role.USER.value));
+                    usersRepository.save(user);
+                },
+                () -> {
+                    throw new UsernameNotFoundException("User not found");
+                }
+        );
+    }
     public Optional<Users> findUserByUsername(String username) {
         return usersRepository.findByUsername(username);
     }

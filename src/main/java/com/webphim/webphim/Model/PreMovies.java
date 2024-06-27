@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Time;
-
 @Getter
 @Setter
 @Entity
@@ -18,6 +16,7 @@ public class PreMovies {
 
     @Column(nullable = false)
     private boolean isPre;
+
 
     // Getters and setters
 }
