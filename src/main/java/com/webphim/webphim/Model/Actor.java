@@ -1,6 +1,5 @@
 package com.webphim.webphim.Model;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,8 +17,8 @@ public class Actor {
     private String actorName;
 
     @ManyToOne
-    @JoinColumn(name = "moviesId", nullable = false)
-    private Movies movies;
+    @JoinColumn(name = "movie_id", nullable = false)
+    private Movies movie;
 
     // Getters and setters
 }

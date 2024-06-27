@@ -1,7 +1,0 @@
-package com.webphim.webphim.Reponsitory;
-
-import com.webphim.webphim.Model.Country;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface CountryRepository extends JpaRepository<Country, Integer> {
-}
