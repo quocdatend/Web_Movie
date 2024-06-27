@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Danh mục</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Danh sách Danh mục</h2>
+    <a href="/AdminMovies/categories/new" class="btn btn-primary mb-3">Thêm mới Danh mục</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên danh mục</th>
+            <th>Slug</th>
+            <th>Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Sử dụng Thymeleaf để lặp qua danh sách categories -->
+        <tr th:each="category : ${categories}">
+            <td th:text="${category.id}"></td>
+            <td th:text="${category.categoryName}"></td>
+            <td th:text="${category.slug}"></td>
+            <td>
+                <!-- Nút sửa, sử dụng th:href và th:text -->
+                <a th:href="@{AdminMovies/categories/{id}/edit(id=${category.id})}" class="btn btn-sm btn-info">Sửa</a>
+
+                <!-- Form xóa, sử dụng th:action, th:method và th:text -->
+                <form th:action="@{AdminMovies/categories/{id}(id=${category.id})}" method="post" style="display: inline;">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
