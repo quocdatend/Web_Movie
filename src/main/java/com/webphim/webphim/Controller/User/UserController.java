@@ -1,24 +1,33 @@
 package com.webphim.webphim.Controller.User;
 
+import com.webphim.webphim.Model.ImageUser;
+import com.webphim.webphim.Model.Movies;
+import com.webphim.webphim.Model.WatchHistory;
+import com.webphim.webphim.Service.*;
 import com.webphim.webphim.config.PaymentConfig;
 import com.webphim.webphim.Model.Users;
-import com.webphim.webphim.Service.UsersService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 @Controller
@@ -26,11 +35,35 @@ import java.util.*;
 public class UserController {
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private ImageUserService imageUserService;
+    @Autowired
+    private WatchHistoryService watchHistoryService;
+    @Autowired
+    private AdminMoviesService adminMoviesService;
     @GetMapping("/Profile")
     public String showProfileUser(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Users user = usersService.getUserByUsername(userDetails.getUsername());
+        Optional<ImageUser> imageUser = imageUserService.getImageUserById(user.getId());
+        List<WatchHistory> watchHistory = watchHistoryService.findByUserId(user.getId());
         model.addAttribute("user", user);
+        model.addAttribute("watchHistory", watchHistory);
+        if(imageUser.stream().toList().get(0).getUrl()==null) {
+            model.addAttribute("Avatar", imageUser.stream().toList().get(0).getAvatarDefault());
+        } else  {
+            model.addAttribute("Avatar", imageUser.stream().toList().get(0).getUrl());
+        }
         return "User/Profile/index";
+    }
+
+    @PostMapping("/UploadImageToCloud")
+    public String uploadAvatarUserToCloud(Model model, @RequestParam MultipartFile AvatarUrl, @AuthenticationPrincipal UserDetails userDetails) {
+        Users user = usersService.getUserByUsername(userDetails.getUsername());
+        Optional<ImageUser> imageUser = imageUserService.getImageUserById(user.getId());
+        imageUserService.updateImageUserById(imageUser.stream().toList().get(0).getId(), AvatarUrl);
+        model.addAttribute("user", user);
+        model.addAttribute("Avatar", imageUser.stream().toList().get(0).getUrl());
+        return "redirect:/User/Profile";
     }
     @GetMapping("/Payment")
     public String createPayment(HttpServletRequest req, HttpServletResponse resp, Model model) throws ServletException, IOException {
@@ -132,5 +165,23 @@ public class UserController {
             model.addAttribute("status", false);
         }
         return "User/Payment/Successfully";
+    }
+    @SneakyThrows
+    @GetMapping("/SaveMovie")
+    public String saveMovieHistory(@RequestParam String id, @AuthenticationPrincipal UserDetails userDetails) {
+        Users users = usersService.getUserByUsername(userDetails.getUsername());
+        Movies movies = adminMoviesService.findid(Long.valueOf(id));
+        LocalTime localTime = LocalTime.now();
+        if(movies == null) {
+            return "redirect:/Home";
+        }
+        if(watchHistoryService.checkHistory(users, movies)) {
+            WatchHistory watchHistory = new WatchHistory();
+            watchHistory.setUsers(users);
+            watchHistory.setMovie(movies);
+            watchHistory.setTime(Time.valueOf(localTime));
+            watchHistoryService.saveWatchHistory(watchHistory);
+        }
+        return "redirect:/Home";
     }
 }

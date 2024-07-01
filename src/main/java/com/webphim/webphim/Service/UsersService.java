@@ -1,7 +1,9 @@
 package com.webphim.webphim.Service;
 
 import com.webphim.webphim.Common.Role;
+import com.webphim.webphim.Model.ImageUser;
 import com.webphim.webphim.Model.Users;
+import com.webphim.webphim.Reponsitory.ImageUserRepository;
 import com.webphim.webphim.Reponsitory.RoleRepository;
 import com.webphim.webphim.Reponsitory.UsersRepository;
 import jakarta.persistence.EntityManager;
@@ -22,6 +24,8 @@ public class UsersService {
     @PersistenceContext
     private EntityManager entityManager;
     @Autowired
+    private ImageUserRepository imageUserRepository;
+    @Autowired
     private RoleRepository roleRepository;
     @Autowired
     private UsersRepository usersRepository;
@@ -39,6 +43,10 @@ public class UsersService {
                 user -> {
                     user.getRoles().add(roleRepository.findRoleById(Role.USER.value));
                     usersRepository.save(user);
+                    ImageUser imageUser = new ImageUser();
+                    imageUser.setUsers(user);
+                    imageUser.setAvatarDefault("https://res.cloudinary.com/dap6ivvwp/image/upload/fl_preserve_transparency/v1719456941/slide1_ptyq2y.jpg?_s=public-apps");
+                    imageUserRepository.save(imageUser);
                 },
                 () -> {
                     throw new UsernameNotFoundException("User not found");
