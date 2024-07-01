@@ -50,7 +50,7 @@
       <div class="row flexbox-center">
         <div class="col-lg-5 text-lg-left text-center">
           <div class="transformers-content">
-            <img th:src="@{/assets/img/slide2.png}" alt="about" />
+            <img th:src="${Avatar}" alt="about" />
           </div>
         </div>
         <div class="col-lg-7">
@@ -95,7 +95,10 @@
                   Avatar:
                 </div>
                 <div class="transformers-right">
-                  <a href="#" class="theme-btn">Upload</a>
+                  <form th:action="@{/User/UploadImageToCloud}" method="post" enctype="multipart/form-data">
+                    <input type="file" id="AvatarUrl" name="AvatarUrl" style="display: grid;margin-bottom: 14px;">
+                    <span><button type="submit" class="theme-btn">Upload</button></span>
+                  </form>
                 </div>
               </li>
               <li>
@@ -103,9 +106,12 @@
                   History:
                 </div>
                 <div class="transformers-right">
-                  <span style="padding-right:40px">ID</span><span style="padding-right:40px">Name</span><span>Time</span></br>
-                  <span style="padding-right:40px">ID</span><span style="padding-right:40px">Name</span><span>Time</span></br>
-                  <span style="padding-right:40px">ID</span><span style="padding-right:40px">Name</span><span>Time</span></br>
+                  <div th:each="history : ${watchHistory}">
+                    <span style="padding-right:40px" th:text="${history.getMovie().getId()}">ID</span>
+                    <span style="padding-right:40px" th:text="${history.getMovie().getName()}">Name</span>
+                    <span th:text="${history.getTime()}">Time</span></br>
+                  </div>
+
                 </div>
               </li>
               <li>

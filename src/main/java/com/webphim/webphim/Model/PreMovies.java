@@ -12,11 +12,10 @@ import lombok.Setter;
 public class PreMovies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int preMovieId;
-
-    @Column(nullable = false)
-    private boolean isPre;
-
+    private Long preMovieId;
+    @OneToOne
+    @JoinColumn(name = "movie_id", nullable = false)
+    private Movies movie;
 
     // Getters and setters
 }
