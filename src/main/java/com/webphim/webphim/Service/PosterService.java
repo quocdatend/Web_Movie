@@ -23,5 +23,12 @@ public class PosterService {
     public void savePoster(Poster poster){
         posterRepository.save(poster);
     }
-
+    public Poster editPoster(Long id, Poster updatedPoster) {
+        return posterRepository.findById(id).map(poster -> {
+            poster.setPosterUrl(updatedPoster.getPosterUrl());
+            poster.setThumbUrl(updatedPoster.getThumbUrl());
+            poster.setMovie(updatedPoster.getMovie());
+            return posterRepository.save(poster);
+        }).orElseThrow(() -> new RuntimeException("Poster not found with id " + id));
+    }
 }

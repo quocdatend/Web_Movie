@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,11 +29,13 @@ public class AdminMoviesController {
     private ActorService actorService;
     @Autowired
     private EpisodesService episodesService;
+    @Autowired
+    private CloudinaryService cloudinaryService;
     @GetMapping("")
     public String Movies(Model model){
         List<Movies> movies = adminMoviesService.getAllMovies();
         model.addAttribute("movies",movies);
-        return "Admin/Movie";
+        return "Admin/Movie/Movie";
     }
     @GetMapping("/add")
     public String showAddMovieForm(Model model) {
@@ -39,22 +43,24 @@ public class AdminMoviesController {
         movie.setActors(new ArrayList<>());
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("movie", movie);
-        return "Admin/addmovies";
+        return "Admin/Movie/addmovies";
     }
 
     @SneakyThrows
     @PostMapping("/add")
     public String addMovie(@ModelAttribute("movie") Movies movie,
                            @RequestParam("trailerUrl") String trailerUrl,
-                           @RequestParam("posterUrl") String posterUrl,
-                           @RequestParam("thumbUrl") String thumbUrl,
+                           @RequestParam("posterUrl") MultipartFile posterUrl,
+                           @RequestParam("thumbUrl") MultipartFile thumbUrl,
                            Model model) {
         adminMoviesService.saveMovie(movie);
 
         // Tạo và lưu thông tin poster
         Poster poster = new Poster();
-        poster.setThumbUrl(thumbUrl);
-        poster.setPosterUrl(posterUrl);
+        String thumbUrlString = cloudinaryService.uploadImage(thumbUrl);
+        poster.setThumbUrl(thumbUrlString);
+        String posterUrlString = cloudinaryService.uploadImage(posterUrl);
+        poster.setPosterUrl(posterUrlString);
         poster.setMovie(movie);
         posterService.savePoster(poster);
 
@@ -73,16 +79,33 @@ public class AdminMoviesController {
         Movies movies = adminMoviesService.findMovie(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         model.addAttribute("movie", adminMoviesService.findMovie(id));
-        return "Admin/EditMovie";
+        return "Admin/Movie/EditMovie";
     }
     @PostMapping("/edit/{id}")
     public String editMovie(
             @RequestParam("id") Long id,
-            @ModelAttribute("movie") Movies movie, Model model
-        ,BindingResult result) {
+            @ModelAttribute("movie") Movies movie,
+            @RequestParam(value = "posterUrl", required = false) MultipartFile posterUrl,
+            @RequestParam(value = "thumbUrl", required = false) MultipartFile thumbUrl,
+            @RequestParam("idp") String idp,
+            Model model
+            ,BindingResult result) throws IOException {
         if (result.hasErrors()) {
             movie.setId(id);
             return "Admin/EditMovie";
+        }
+        if(thumbUrl != null || posterUrl != null){
+            Poster exitposter =  new Poster();
+            exitposter.setMovie(movie);
+            if (thumbUrl != null ) {
+                String thumbUrlString = cloudinaryService.uploadImage(thumbUrl);
+                exitposter.setThumbUrl(thumbUrlString);
+            }
+            if (posterUrl != null ) {
+                String posterUrlString = cloudinaryService.uploadImage(posterUrl);
+                exitposter.setPosterUrl(posterUrlString);
+            }
+            Long idpl = Long.parseLong(idp); // Convert String to Long
         }
         adminMoviesService.editmovie(movie);
         model.addAttribute("movie", adminMoviesService.getAllMovies());
@@ -102,7 +125,7 @@ public class AdminMoviesController {
         model.addAttribute("actor", new Actor());
         List<Actor> actors = movie.getActors();
         model.addAttribute("actors", actors);
-        return "Admin/addActor";
+        return "Admin/Movie/addActor";
     }
     @PostMapping("/addActor")
     public String addActor(@RequestParam("movieId") Long movieId, @ModelAttribute Actor actor) {
@@ -126,7 +149,7 @@ public class AdminMoviesController {
         model.addAttribute("category2", categoryService.getAllCategories());
         List<Category> category2 = movie.getCategories();
         model.addAttribute("category1", category2);
-        return "Admin/addcat";
+        return "Admin/Movie/addcat";
     }
 
     @PostMapping("/addCategory/{movieId}")
@@ -155,15 +178,35 @@ public class AdminMoviesController {
 
         model.addAttribute("episode", new Episodes());
 
-        return "Admin/addEpisode";
+        return "Admin/Movie/addEpisode";
     }
     @PostMapping("/addEpisode")
-    public String addEpisodeToMovie(@ModelAttribute("episode") Episodes episode, @RequestParam("movieId") Long movieId) {
+    public String addEpisodeToMovie(@ModelAttribute("episode") Episodes episode, @RequestParam("movieId") Long movieId
+                                    ,@RequestParam(value = "Eid", required = false) Long idE) {
+        if(idE != null){
+            episodesService.updateEpisode(idE,episode);
+             return "redirect:/AdminMovies/addEpisode/" + movieId;
+        }
         Movies movie = adminMoviesService.findid(movieId);
         episode.setMovie(movie);
         episodesService.saveEpisode(episode);
-        return "redirect:/AdminMovies/edit/" + movieId;
+        return "redirect:/AdminMovies/addEpisode/" + movieId;
     }
-
+    @GetMapping("/deleteEpisode/{id}")
+    public String deleteEpisode(@PathVariable Long id, Model model) {
+        Episodes a = episodesService.getEpisodeById(id);
+        episodesService.deteleE(a);
+        return "redirect:/AdminMovies/addEpisode/" + a.getMovie().getId();
+    }
+    @GetMapping ("/editEpisode/{id}")
+    public String editE(@PathVariable Long id,Model model) {
+        Episodes a = episodesService.getEpisodeById(id);
+        Movies movies = a.getMovie();
+        List<Episodes> episodes = movies.getEpisodes();
+        model.addAttribute("movie", movies);
+        model.addAttribute("episode",a);
+        model.addAttribute("episodes", episodes);
+        return "Admin/Movie/addEpisode";
+    }
 }
 

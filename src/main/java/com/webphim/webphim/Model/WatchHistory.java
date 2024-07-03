@@ -26,7 +26,5 @@ public class WatchHistory {
     @ManyToOne
     @JoinColumn(name = "usersId", nullable = false)
     private Users users;
-
     private Time time;
-    // Getters and setters
 }

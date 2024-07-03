@@ -257,7 +257,6 @@
                         <th>YEAR</th>
                         <th>COUNTRY</th>
                         <th>EPISODE C/T</th>
-                        <th>PRE MOVIE</th>
                         <th>DIRECTOR</th>
                         <th>IMAGE</th>
                         <th>CATEGROY</th>
@@ -274,7 +273,6 @@
                         <th>YEAR</th>
                         <th>COUNTRY</th>
                         <th>EPISODE C/T</th>
-                        <th>PRE MOVIE</th>
                         <th>DIRECTOR</th>
                         <th>IMAGE</th>
                         <th>CATEGROY</th>
@@ -303,11 +301,23 @@
                       <td th:text="${movie.episodeCurrent} +'/'+ ${movie.episodeTotal}" ></td>
                       <td></td>
                       <td th:text="${movie.directorName}"></td>
-                      <td th:text="${movie.id}"></td>
-                      <td></td>
                       <td>
-                        <ul>
-                          <li th:each="actor : ${movie.actors}" th:text="${actor.actorName}"></li>
+                        <ul th:if="${movie.poster}">
+                          <li style=" list-style: none" th:each="poster1 : ${movie.poster}">
+                            <img th:src="${poster1.posterUrl}" alt="Poster" style="max-width: 100px; max-height: 150px;">
+                            <img th:src="${poster1.thumbUrl}" alt="Poster" style="max-width: 100px; max-height: 150px;">
+                          </li>
+                        </ul>
+                        <span th:unless="${movie.poster}">No posters available</span>
+                      </td>
+                      <td>
+                        <ul style="padding: 0px;">
+                          <li style=" list-style: none" th:each="categorie : ${movie.categories}" th:text="${categorie.categoryName}"></li>
+                        </ul>
+                      </td>
+                      <td>
+                        <ul style="padding: 0px;">
+                          <li style=" list-style: none " th:each="actor : ${movie.actors}" th:text="${actor.actorName}"></li>
                         </ul>
                       </td>
 

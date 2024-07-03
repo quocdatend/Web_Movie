@@ -17,10 +17,10 @@ public class Episodes {
     @Column(nullable = false, length = 10)
     private String name;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 100)
     private String slug;
 
-    @Column(length = 100)
+    @Column(length = 255)
     private String contentEpisode;
 
     @Column(length = 255)

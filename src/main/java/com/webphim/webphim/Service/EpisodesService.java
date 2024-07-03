@@ -34,10 +34,11 @@ public class EpisodesService {
         episodesRepository.deleteById(episodeId);
     }
 
+    public void  deteleE(Episodes episodes){
+        episodesRepository.delete(episodes);
+    }
     public Episodes getEpisodeById(Long episodeId) {
         Optional<Episodes> optionalEpisode = episodesRepository.findById(episodeId);
         return optionalEpisode.orElse(null); // Return null or handle not found case
     }
-
-
 }
