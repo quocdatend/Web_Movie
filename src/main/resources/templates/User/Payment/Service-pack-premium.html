@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Moviepoint - Online Movie,Vedio and TV Show HTML Template</title>
+    <!-- Favicon Icon -->
+    <link rel="icon" type="image/png" th:href="@{/assets/img/favcion.png}" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/bootstrap.min.css}" media="all" />
+    <!-- Slick nav CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/slicknav.min.css}" media="all" />
+    <!-- Iconfont CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/icofont.css}" media="all" />
+    <!-- Owl carousel CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/owl.carousel.css}">
+    <!-- Popup CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/magnific-popup.css}">
+    <!-- Main style CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}" media="all" />
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/responsive.css}" media="all" />
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!-- transformers area start -->
+<section class="transformers-area" style="margin-bottom: 44px;margin-top: 44px;">
+    <div class="container">
+        <div class="transformers-box">
+            <div class="row flexbox-center">
+                <div class="col-lg-5 text-lg-left text-center">
+                    <div class="transformers-content">
+                        <img th:src="@{/assets/img/slide2.png}" alt="about" />
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="transformers-content">
+                        <h2>Thông Tin Dịch Vụ</h2>
+                        <p>3D | Animation | Action | Sci-Fi</p>
+                        <ul>
+                            <li>
+                                <div class="transformers-left">
+                                    Loại:
+                                </div>
+                                <div class="transformers-right">
+                                    <span>Premium</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="transformers-left">
+                                    Giá:
+                                </div>
+                                <div class="transformers-right" >
+                                    <span>99.999vnđ</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="transformers-left">
+
+                                </div>
+                                <div class="transformers-right" >
+                                    <span>
+                                       <a th:href="${PaymentURL}" class="theme-btn"><i class="icofont icofont-ticket"></i> BUY NOW! </a>
+                                    </span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="transformers-left">
+                                    <a href="/User/Profile" style="text-decoration:underline;">Back to Profile</a>
+                                </div>
+                                <div class="transformers-right" >
+
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- transformers area end -->
+<!-- jquery main JS -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<!-- Bootstrap JS -->
+<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+<!-- Slick nav JS -->
+<script th:src="@{/assets/js/jquery.slicknav.min.js}"></script>
+<!-- owl carousel JS -->
+<script th:src="@{/assets/js/owl.carousel.min.js}"></script>
+<!-- Popup JS -->
+<script th:src="@{/assets/js/jquery.magnific-popup.min.js}"></script>
+<!-- Isotope JS -->
+<script th:src="@{/assets/js/isotope.pkgd.min.js}"></script>
+<!-- main JS -->
+<script th:src="@{/assets/js/main.js}"></script>
+</body>
+
+</html>

@@ -3,12 +3,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Time;
-
 @Getter
 @Setter
 @Entity
-@Table(name = "IMAGE_USER")
+@Table(name = "imageUser")
 
 public class ImageUser {
     @Id
@@ -18,13 +16,11 @@ public class ImageUser {
     @Column(length = 255)
     private String url;
 
-    @ManyToOne
-    @JoinColumn(name = "usersId", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "usersId")
     private Users users;
-
-    @ManyToOne
-    @JoinColumn(name = "avatarId")
-    private AvatarDefault avatarDefault;
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'https://res-console.cloudinary.com/dap6ivvwp/thumbnails/v1/image/upload/v1719456941/c2xpZGUxX3B0eXEyeQ==/drilldown'")
+    private String avatarDefault;
 
     // Getters and setters
 }

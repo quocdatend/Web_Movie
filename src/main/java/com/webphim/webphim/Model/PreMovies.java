@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Time;
-
 @Getter
 @Setter
 @Entity
@@ -14,10 +12,10 @@ import java.sql.Time;
 public class PreMovies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int preMovieId;
-
-    @Column(nullable = false)
-    private boolean isPre;
+    private Long preMovieId;
+    @OneToOne
+    @JoinColumn(name = "movie_id", nullable = false)
+    private Movies movie;
 
 
     // Getters and setters
