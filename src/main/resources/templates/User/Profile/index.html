@@ -87,7 +87,8 @@
                   Premium:
                 </div>
                 <div class="transformers-right">
-                  <span>Chưa có</span>
+                  <span th:if="${user.isPre} == false">Chưa có</span>
+                  <span th:if="${user.isPre}" class="theme-btn">Đang sử dụng</span>
                 </div>
               </li>
               <li>
@@ -137,7 +138,7 @@
           </div>
         </div>
       </div>
-      <a href="/User/Payment" class="theme-btn"><i class="icofont icofont-ticket"></i> BUY PREMIUM</a>
+      <a href="/User/Payment" class="theme-btn" th:if="${user.isPre}==false"><i class="icofont icofont-ticket"></i> BUY PREMIUM</a>
     </div>
   </div>
 </section><!-- transformers area end -->

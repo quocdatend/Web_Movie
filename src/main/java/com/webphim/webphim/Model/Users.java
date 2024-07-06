@@ -38,6 +38,7 @@ public class Users implements UserDetails {
     private String password;
     @Column(nullable = false, length = 11)
     private String phone;
+    private boolean isPre = false;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "UserRole",
             joinColumns = @JoinColumn(name = "userId"),
