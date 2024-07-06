@@ -159,6 +159,9 @@ public class UserController {
         if(vnp_TransactionStatus.equals("00")) {
             // thêm các tham số
             model.addAttribute("status", true);
+            Users user = usersService.getUserByUsername(userDetails.getUsername());
+            user.setPre(true);
+            usersService.saveUser(user);
             usersService.setPremiumRole(userDetails.getUsername());
         } else {
             // tạo thêm các tham số khi thanh toán thất bại tại đây

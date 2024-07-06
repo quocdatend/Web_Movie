@@ -4,8 +4,13 @@
  */
 package com.webphim.webphim.Controller;
 
+import com.webphim.webphim.Service.AdminMoviesService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -15,16 +20,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/Movies")
 public class MoviesController {
-    @GetMapping("")
-    public String movies() {
-        return "Movies/movies";
-    }
-    @GetMapping("/movie-details")
-    public String movie_details() {
+    @Autowired
+    private AdminMoviesService adminMoviesService;
+    @GetMapping("/movie-details/{id}")
+    public String movies(@PathVariable long id, Model model) {
+        model.addAttribute("movie", adminMoviesService.findid(id));
         return "Movies/movie-details";
     }
-    @GetMapping("/top-movies")
-    public String top_movies() {
-        return "Movies/top-movies";
+    //    @GetMapping("/movie-details")
+//    public String movie_details() {
+//        return "Movies/movie-details";
+//    }
+//    @GetMapping("/top-movies")
+//    public String top_movies() {
+//        return "Movies/top-movies";
+//    }
+    @GetMapping("/watching/{id}")
+    public  String watching(@PathVariable long id, Model model){
+        model.addAttribute("movie", adminMoviesService.findid(id));
+        return "Movies/wachting";
     }
 }
