@@ -15,7 +15,6 @@ import java.sql.Time;
 @NoArgsConstructor
 @Entity
 @Table(name = "WATCH_HISTORY")
-
 public class WatchHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +25,6 @@ public class WatchHistory {
     @ManyToOne
     @JoinColumn(name = "usersId", nullable = false)
     private Users users;
-
     private Time time;
     // Getters and setters
 }

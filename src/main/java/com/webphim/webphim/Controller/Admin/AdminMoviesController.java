@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,11 +84,28 @@ public class AdminMoviesController {
     @PostMapping("/edit/{id}")
     public String editMovie(
             @RequestParam("id") Long id,
-            @ModelAttribute("movie") Movies movie, Model model
-            ,BindingResult result) {
+            @ModelAttribute("movie") Movies movie,
+            @RequestParam(value = "posterUrl", required = false) MultipartFile posterUrl,
+            @RequestParam(value = "thumbUrl", required = false) MultipartFile thumbUrl,
+            @RequestParam("idp") String idp,
+            Model model
+            ,BindingResult result) throws IOException {
         if (result.hasErrors()) {
             movie.setId(id);
             return "Admin/EditMovie";
+        }
+        if(thumbUrl != null || posterUrl != null){
+            Poster exitposter =  new Poster();
+            exitposter.setMovie(movie);
+            if (thumbUrl != null ) {
+                String thumbUrlString = cloudinaryService.uploadImage(thumbUrl);
+                exitposter.setThumbUrl(thumbUrlString);
+            }
+            if (posterUrl != null ) {
+                String posterUrlString = cloudinaryService.uploadImage(posterUrl);
+                exitposter.setPosterUrl(posterUrlString);
+            }
+            Long idpl = Long.parseLong(idp); // Convert String to Long
         }
         adminMoviesService.editmovie(movie);
         model.addAttribute("movie", adminMoviesService.getAllMovies());
@@ -164,10 +182,10 @@ public class AdminMoviesController {
     }
     @PostMapping("/addEpisode")
     public String addEpisodeToMovie(@ModelAttribute("episode") Episodes episode, @RequestParam("movieId") Long movieId
-                                    ,@RequestParam(value = "Eid", required = false) Long idE) {
+            ,@RequestParam(value = "Eid", required = false) Long idE) {
         if(idE != null){
             episodesService.updateEpisode(idE,episode);
-             return "redirect:/AdminMovies/addEpisode/" + movieId;
+            return "redirect:/AdminMovies/addEpisode/" + movieId;
         }
         Movies movie = adminMoviesService.findid(movieId);
         episode.setMovie(movie);
@@ -182,7 +200,6 @@ public class AdminMoviesController {
     }
     @GetMapping ("/editEpisode/{id}")
     public String editE(@PathVariable Long id,Model model) {
-
         Episodes a = episodesService.getEpisodeById(id);
         Movies movies = a.getMovie();
         List<Episodes> episodes = movies.getEpisodes();
@@ -192,4 +209,3 @@ public class AdminMoviesController {
         return "Admin/Movie/addEpisode";
     }
 }
-
