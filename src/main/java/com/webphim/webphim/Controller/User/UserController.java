@@ -44,14 +44,14 @@ public class UserController {
     @GetMapping("/Profile")
     public String showProfileUser(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Users user = usersService.getUserByUsername(userDetails.getUsername());
-        Optional<ImageUser> imageUser = imageUserService.getImageUserById(user.getId());
+        ImageUser imageUser = imageUserService.getImageUserById(user.getId());
         List<WatchHistory> watchHistory = watchHistoryService.findByUserId(user.getId());
         model.addAttribute("user", user);
         model.addAttribute("watchHistory", watchHistory);
-        if(imageUser.stream().toList().get(0).getUrl()==null) {
-            model.addAttribute("Avatar", imageUser.stream().toList().get(0).getAvatarDefault());
+        if(imageUser.getUrl()==null) {
+            model.addAttribute("Avatar", imageUser.getAvatarDefault());
         } else  {
-            model.addAttribute("Avatar", imageUser.stream().toList().get(0).getUrl());
+            model.addAttribute("Avatar", imageUser.getUrl());
         }
         return "User/Profile/index";
     }
@@ -59,10 +59,10 @@ public class UserController {
     @PostMapping("/UploadImageToCloud")
     public String uploadAvatarUserToCloud(Model model, @RequestParam MultipartFile AvatarUrl, @AuthenticationPrincipal UserDetails userDetails) {
         Users user = usersService.getUserByUsername(userDetails.getUsername());
-        Optional<ImageUser> imageUser = imageUserService.getImageUserById(user.getId());
-        imageUserService.updateImageUserById(imageUser.stream().toList().get(0).getId(), AvatarUrl);
+        ImageUser imageUser = imageUserService.getImageUserById(user.getId());
+        imageUserService.updateImageUserById((long) imageUser.getId(), AvatarUrl);
         model.addAttribute("user", user);
-        model.addAttribute("Avatar", imageUser.stream().toList().get(0).getUrl());
+        model.addAttribute("Avatar", imageUser.getUrl());
         return "redirect:/User/Profile";
     }
     @GetMapping("/Payment")

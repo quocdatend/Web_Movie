@@ -16,10 +16,10 @@ public class ImageUserService {
     private ImageUserRepository imageUserRepository;
     @Autowired
     private CloudinaryService cloudinaryService;
-    public Optional<ImageUser> getImageUserById(Long id) {return imageUserRepository.findById(id);}
+    public ImageUser getImageUserById(Long id) {return imageUserRepository.findByUsersId(id);}
     @SneakyThrows
-    public void updateImageUserById(int id, MultipartFile AvatarUrl) {
-        ImageUser imageUser = this.getImageUserById((long) id).orElse(null);
+    public void updateImageUserById(Long id, MultipartFile AvatarUrl) {
+        ImageUser imageUser = imageUserRepository.findByUsersId(id);
         imageUser.setUrl(cloudinaryService.uploadImage(AvatarUrl));
         imageUserRepository.save(imageUser);
     }
