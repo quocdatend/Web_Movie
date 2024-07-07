@@ -60,7 +60,7 @@ public class UserController {
     public String uploadAvatarUserToCloud(Model model, @RequestParam MultipartFile AvatarUrl, @AuthenticationPrincipal UserDetails userDetails) {
         Users user = usersService.getUserByUsername(userDetails.getUsername());
         ImageUser imageUser = imageUserService.getImageUserById(user.getId());
-        imageUserService.updateImageUserById((long) imageUser.getId(), AvatarUrl);
+        imageUserService.updateImageUserById(user.getId(), AvatarUrl);
         model.addAttribute("user", user);
         model.addAttribute("Avatar", imageUser.getUrl());
         return "redirect:/User/Profile";
