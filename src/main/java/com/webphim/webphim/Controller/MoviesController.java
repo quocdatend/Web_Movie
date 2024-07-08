@@ -13,7 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +41,8 @@ public class MoviesController {
     private CategoryService categoryService;
     @Autowired
     private EpisodesService episodesService;
+    @Autowired
+    private WatchHistoryService watchHistoryService;
     @GetMapping("/movie-details/{id}")
     public String movies(@PathVariable long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
         List<CommentsMovie> commentsMovieList = commentsMovieService.getAllCommentsInMovie(id);
@@ -114,7 +118,7 @@ public class MoviesController {
         return commentLevelService.inCreDisLike(postId);
     }
     @GetMapping("/watching/{id}")
-    public String watching(@PathVariable long id, Model model){
+    public String watching(@PathVariable long id, Model model, @AuthenticationPrincipal UserDetails userDetails){
         List<CommentsMovie> commentsMovieList = commentsMovieService.getAllCommentsInMovie(id);
         List<CommentLevel> commentLevelList = new ArrayList<>();
         List<ImageUser> imageUserCommentList = new ArrayList<>();
@@ -134,6 +138,15 @@ public class MoviesController {
         }
         List<ImageUser> imageUserCommentLevelListNew = new ArrayList<>(new ArrayList<>(new HashSet<>(imageUserCommentLevelList)));
         Movies movies = adminMoviesService.findid(id);
+        Users users = usersService.getUserByUsername(userDetails.getUsername());
+        LocalTime localTime = LocalTime.now();
+        if(watchHistoryService.checkHistory(users, movies)) {
+            WatchHistory watchHistory = new WatchHistory();
+            watchHistory.setUsers(users);
+            watchHistory.setMovie(movies);
+            watchHistory.setTime(Time.valueOf(localTime));
+            watchHistoryService.saveWatchHistory(watchHistory);
+        }
         Episodes episodes = movies.getEpisodes().get(0);
         model.addAttribute("movie", adminMoviesService.findid(id));
         model.addAttribute("episodes", episodes);
@@ -147,13 +160,21 @@ public class MoviesController {
         return "Movies/wachting";
     }
     @RequestMapping("/watching/{id}/{ide}")
-    public String watchEpisode(@PathVariable("id") Long id, @PathVariable("ide") Long episodeId, Model model) {
+    public String watchEpisode(@PathVariable("id") Long id, @PathVariable("ide") Long episodeId, Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Movies movies = adminMoviesService.findid(id);
+        Users users = usersService.getUserByUsername(userDetails.getUsername());
+        LocalTime localTime = LocalTime.now();
+        if(watchHistoryService.checkHistory(users, movies)) {
+            WatchHistory watchHistory = new WatchHistory();
+            watchHistory.setUsers(users);
+            watchHistory.setMovie(movies);
+            watchHistory.setTime(Time.valueOf(localTime));
+            watchHistoryService.saveWatchHistory(watchHistory);
+        }
         Episodes episodes = episodesService.getEpisodeById(episodeId);
         model.addAttribute("movie", movies);
         model.addAttribute("episodes", episodes);
         model.addAttribute("Category",categoryService.getAllCategories());
-
         return "Movies/wachting";
     }
     @GetMapping("/search")
