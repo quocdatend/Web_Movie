@@ -2,11 +2,14 @@ package com.webphim.webphim.Service;
 
 
 import com.webphim.webphim.Model.Movies;
+import com.webphim.webphim.Model.Users;
 import com.webphim.webphim.Reponsitory.MoviesRepository;
 import com.webphim.webphim.Reponsitory.PosterRepository;
 import com.webphim.webphim.Reponsitory.TrailerMoviesRepository;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +35,9 @@ public class AdminMoviesService {
         return moviesRepository.findById(id);
     }
     public void editmovie(@NotNull Movies movies){
-            Movies existingMovies = moviesRepository.findById(movies.getId())
-                    .orElseThrow(() -> new IllegalStateException("Category with ID " +
-                            movies.getId() + " does not exist."));
+        Movies existingMovies = moviesRepository.findById(movies.getId())
+                .orElseThrow(() -> new IllegalStateException("Category with ID " +
+                        movies.getId() + " does not exist."));
         existingMovies.setName(movies.getName());
         existingMovies.setContentMovies(movies.getContentMovies());
         existingMovies.setContentMovies(movies.getContentMovies());
@@ -47,7 +50,7 @@ public class AdminMoviesService {
         existingMovies.setDirectorName(movies.getDirectorName());
         existingMovies.setEpisodeTotal(movies.getEpisodeTotal());
         existingMovies.setEpisodeCurrent(movies.getEpisodeCurrent());
-        
+
         moviesRepository.save(movies);
     }
     @Transactional
@@ -63,5 +66,15 @@ public class AdminMoviesService {
         Movies movies = moviesRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
         return movies;
+    }
+    public List<Movies> searchMoviesByName(String name) {
+        return moviesRepository.findByNameContainingIgnoreCase(name);
+    }
+    public List<Movies> getMoviesByCategoryId(Long categoryId) {
+        return moviesRepository.findByCategoriesId(categoryId);
+    }
+    public Page<Movies> GetAll(int pageNo, int pageSize) {
+        PageRequest pageRequest =PageRequest.of(pageNo,pageSize);
+        return moviesRepository.findAll(pageRequest);
     }
 }

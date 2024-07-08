@@ -94,6 +94,12 @@
                         <input type="number" th:field="*{episodeCurrent}"/>
                     </div>
                     <div>
+                        <a class="btn btn-warning" th:href="@{/AdminMovies/addPoster/{id}(id=${id})}">
+                            QUAN LY ANH <i class="fas fa-edit"></i>
+                        </a>
+                    </div>
+                    </br>
+                    <div>
                         <a class="btn btn-warning" th:href="@{/AdminMovies/addActor/{id}(id=${id})}">
                             CHINH ACTOR <i class="fas fa-edit"></i>
                         </a>
@@ -110,6 +116,7 @@
                             CHINH Episode <i class="fas fa-edit"></i>
                         </a>
                     </div>
+                    </br>
                     <div>
                         <button type="submit">Save</button>
                     </div>

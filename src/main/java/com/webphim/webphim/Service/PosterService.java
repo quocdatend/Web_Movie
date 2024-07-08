@@ -31,4 +31,16 @@ public class PosterService {
             return posterRepository.save(poster);
         }).orElseThrow(() -> new RuntimeException("Poster not found with id " + id));
     }
+    public Poster findposterid(Long id){
+        Poster movies = posterRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
+        return movies;
+    }
+    @Transactional
+    public void deletePById(Long id) {
+        if (!posterRepository.existsById(id)) {
+            throw new IllegalStateException("Product with ID " + id + " does not exist.");
+        }
+        posterRepository.deleteById(id);
+    }
 }

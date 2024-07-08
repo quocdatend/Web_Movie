@@ -1,7 +1,15 @@
 package com.webphim.webphim.Reponsitory;
 
 import com.webphim.webphim.Model.CommentLevel;
+import com.webphim.webphim.Model.CommentsMovie;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface CommentLevelRepository extends JpaRepository<CommentLevel, Integer> {
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface CommentLevelRepository extends JpaRepository<CommentLevel, Long> {
+    Optional<CommentLevel> findByUsersId(Long id);
+    List<CommentLevel> findByCommentsMovieId(Long id);
 }

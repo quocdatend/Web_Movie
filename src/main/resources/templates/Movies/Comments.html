@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moviepoint - Online Movie,Vedio and TV Show HTML Template</title>
+  <!-- Favicon Icon -->
+  <link rel="icon" type="image/png" th:href="@{/assets/img/favcion.png}" />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/bootstrap.min.css}" media="all" />
+  <!-- Slick nav CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/slicknav.min.css}" media="all" />
+  <!-- Iconfont CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/icofont.css}" media="all" />
+  <!-- Owl carousel CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/owl.carousel.css}">
+  <!-- Popup CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/magnific-popup.css}">
+  <!-- Main style CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}" media="all" />
+  <!-- Responsive CSS -->
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/responsive.css}" media="all" />
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+<div class="details-reply" th:fragment = "Comments">
+  <h2>Comments</h2>
+  <form th:action="@{/Movies/movie-details/post-comment/reply-comment}" method="post" th:each="comment : ${listComment}">
+    <div class="row" >
+      <input hidden="hidden" th:value="${nameLink}" name="nameLink"/>
+      <input hidden="hidden" th:value="${comment.id}" name="id"/>
+      <input hidden="hidden" th:value="${movie.id}" name="MovieId"/>
+      <div class="col-lg-2">
+        <div class="select-container" th:each="avatar : ${listAvatarUserComment}">
+          <img th:if="${avatar.getUsers().getId()} == ${comment.getUsers().getId()} and !${avatar.url}" th:src="${avatar.avatarDefault}" alt="Avatar" style="width:50px;height:50px;">
+          <img th:if="${avatar.getUsers().getId()} == ${comment.getUsers().getId()} and ${avatar.url}" th:src="${avatar.url}" alt="Avatar" style="width:50px;height:50px;">
+        </div>
+      </div>
+      <div class="col-lg-10">
+        <div class="select-container">
+          <p>
+            <span th:text="${comment.getUsers().getUsername()}"></span>
+            <span>  |  </span>
+            <span th:text="${comment.commentTime}"></span>
+          </p>
+          <input type="text" th:value="${comment.title}" readonly/>
+          <p>
+            <a th:onclick="'contentReply('+${comment.id}+')'">reply <i class="icofont icofont-reply" style="position: static;"></i></a>
+            <span>  |  </span>
+            <span><a th:onclick="'likePost('+${comment.id}+')'"><i class="icofont icofont-thumbs-up" style="position: static;"></i></a> <span th:id="'like-count-'+${comment.id}" th:text="${comment.likes}"></span></span>
+            <span>  |  </span>
+            <span><a th:onclick="'dislikePost('+${comment.id}+')'"><i class="icofont icofont-thumbs-down" style="position: static;"></i></a> <span th:id="'dislike-count-'+${comment.id}" th:text="${comment.dislikes}"></span></span>
+          </p>
+          <div class="row" th:each="childComment : ${listChildComment}" >
+            <div class="col-lg-2" th:if="${childComment.getCommentsMovie().getId()} == ${comment.id}">
+              <div class="select-container" th:each="avatar : ${listAvatarUserCommentLevel}">
+                <img th:if="${avatar.getUsers().getId()} == ${childComment.getUsers().getId()} and !${avatar.url}" th:src="${avatar.avatarDefault}" alt="Avatar" style="width:50px;height:50px;">
+                <img th:if="${avatar.getUsers().getId()} == ${childComment.getUsers().getId()} and ${avatar.url}" th:src="${avatar.url}" alt="Avatar" style="width:50px;height:50px;">
+              </div>
+            </div>
+            <div class="col-lg-10" th:if="${childComment.getCommentsMovie().getId()} == ${comment.id}">
+              <div class="select-container">
+                <p>
+                  <span th:text="${childComment.getUsers().getUsername()}"></span>
+                  <span>  |  </span>
+                  <span th:text="${childComment.commentTime}"></span>
+                </p>
+                <input type="text" th:value="${childComment.title}" readonly/>
+                <p>
+                  <a th:onclick="'contentReplyChild('+${childComment.id}+')'">reply <i class="icofont icofont-reply" style="position: static;"></i></a>
+                  <span>  |  </span>
+                  <span><a th:onclick="'likeChildPost('+${childComment.id}+')'"><i class="icofont icofont-thumbs-up" style="position: static;"></i></a> <span th:id="'like-count-child-'+${childComment.id}" th:text="${childComment.likes}"></span></span>
+                  <span>  |  </span>
+                  <span><a th:onclick="'dislikeChildPost('+${childComment.id}+')'"><i class="icofont icofont-thumbs-down" style="position: static;"></i></a> <span th:id="'dislike-count-child-'+${childComment.id}" th:text="${childComment.dislikes}"></span></span>
+                </p>
+                <div th:id="'content-reply-child-'+${childComment.id}" style="display:none;">
+                  <textarea placeholder="Type Here Message" name="title"></textarea>
+                  <button type="submit" class="theme-btn theme-btn2">Post Comment</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div th:id="'content-reply-'+${comment.id}" style="display:none;">
+            <textarea placeholder="Type Here Message" name="title"></textarea>
+            <button type="submit" class="theme-btn theme-btn2">Post Comment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form th:action="@{/Movies/movie-details/post-comment}" method="post">
+    <div class="row">
+      <input hidden="hidden" th:value="${nameLink}" name="nameLink"/>
+      <input hidden="hidden" th:value="${movie.id}" name="id"/>
+      <div class="col-lg-12">
+        <div class="textarea-container">
+          <textarea placeholder="Type Here Message" name="title"></textarea>
+          <button type="submit"><i class="icofont icofont-send-mail"></i></button>
+        </div>
+      </div>
+      <div class="col-lg-12">
+        <button type="submit" class="theme-btn theme-btn2">Post Comment</button>
+      </div>
+    </div>
+  </form>
+  <script>
+		function contentReply(postId) {
+			var element = document.getElementById('content-reply-' + postId);
+			if (element.style.display === "none") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+		}
+		function contentReplyChild(postId) {
+			var element = document.getElementById('content-reply-child-' + postId);
+			if (element.style.display === "none") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+		}
+        function likePost(postId) {
+            $.ajax({
+                url: '/Movies/movie-details/post-comment/like/' + postId,
+                type: 'GET',
+                success: function(data) {
+                    $('#like-count-' + postId).text(data[0]);
+                    $('#dislike-count-' + postId).text(data[1]);
+                }
+            });
+        }
+
+        function dislikePost(postId) {
+            $.ajax({
+                url: '/Movies/movie-details/post-comment/disLike/' + postId,
+                type: 'GET',
+                success: function(data) {
+                    $('#like-count-' + postId).text(data[0]);
+                    $('#dislike-count-' + postId).text(data[1]);
+                }
+            });
+        }
+
+        function likeChildPost(postId) {
+            $.ajax({
+                url: '/Movies/movie-details/post-comment/Child/like/' + postId,
+                type: 'GET',
+                success: function(data) {
+                    $('#like-count-child-' + postId).text(data[0]);
+                    $('#dislike-count-child-' + postId).text(data[1]);
+                }
+            });
+        }
+
+        function dislikeChildPost(postId) {
+            $.ajax({
+                url: '/Movies/movie-details/post-comment/Child/disLike/' + postId,
+                type: 'GET',
+                success: function(data) {
+                    $('#like-count-child-' + postId).text(data[0]);
+                    $('#dislike-count-child-' + postId).text(data[1]);
+                }
+            });
+        }
+    </script>
+</div>
+
+
+<!-- jquery main JS -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<!-- Bootstrap JS -->
+<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+<!-- Slick nav JS -->
+<script th:src="@{/assets/js/jquery.slicknav.min.js}"></script>
+<!-- owl carousel JS -->
+<script th:src="@{/assets/js/owl.carousel.min.js}"></script>
+<!-- Popup JS -->
+<script th:src="@{/assets/js/jquery.magnific-popup.min.js}"></script>
+<!-- Isotope JS -->
+<script th:src="@{/assets/js/isotope.pkgd.min.js}"></script>
+<!-- main JS -->
+<script th:src="@{/assets/js/main.js}"></script>
+</body>
+
+</html>
