@@ -1,11 +1,17 @@
 package com.webphim.webphim.Model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDateTime;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -14,25 +20,20 @@ import java.sql.Time;
 public class CommentsMovie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int commentId;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String title;
-
+    private Long id;
     @ManyToOne
-    @JoinColumn(name = "movieId", nullable = false)
+    @JoinColumn(name = "moviesId", nullable = false)
     private Movies movie;
-
-    @Column(nullable = false)
-    private Time commentTime;
-
     @ManyToOne
     @JoinColumn(name = "usersId", nullable = false)
     private Users users;
-
+    private String title;
+    @Column(nullable = false)
+    private LocalDateTime commentTime;
     @Column(nullable = false)
     private int likes = 0;
-
+    @Column(nullable = false)
+    private int dislikes = 0;
     // Getters and setters
 }
 

@@ -25,11 +25,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <!-- Custom styles for this template -->
-  <link href="css/sb-admin-2.min.css" rel="stylesheet" />
+  <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" />
 
   <!-- Custom styles for this page -->
   <link
-          href="vendor/datatables/dataTables.bootstrap4.min.css"
+          th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}"
           rel="stylesheet"
   />
 </head>
@@ -56,7 +56,7 @@
       <!-- Begin Page Content -->
       <div class="container-fluid">
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">QUẢN LÝ MOVIE</h1>
+        <h1 class="h3 mb-2 text-gray-800">ADD PRE-MOVIE</h1>
         <!-- <p class="mb-4">
           DataTables is a third party plugin that is used to generate the
           demo table below. For more information about DataTables, please
@@ -70,7 +70,10 @@
         <div class="card shadow mb-4">
           <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-              <a href="/AdminMovies/add"> ADD MOVIES</a>
+              <form class="d-flex" th:action="@{/Admin/PreMovies/Add/Search}" method="Get">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="name">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
             </h6>
           </div>
           <div class="card-body">
@@ -83,60 +86,21 @@
               >
                 <thead>
                 <tr>
-                  <th>ACTION</th>
                   <th>NAME</th>
-                  <th>TYPE</th>
-                  <th>TIME</th>
-                  <th>QUALITY</th>
-                  <th>YEAR</th>
-                  <th>COUNTRY</th>
-                  <th>EPISODE C/T</th>
-                  <th>PRE MOVIE</th>
-                  <th>DIRECTOR</th>
                   <th>IMAGE</th>
-                  <th>CATEGROY</th>
-                  <th>ACTOR</th>
+                  <th>ACTION</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                  <th>ACTION</th>
                   <th>NAME</th>
-                  <th>TYPE</th>
-                  <th>TIME</th>
-                  <th>QUALITY</th>
-                  <th>YEAR</th>
-                  <th>COUNTRY</th>
-                  <th>EPISODE C/T</th>
-                  <th>PRE MOVIE</th>
-                  <th>DIRECTOR</th>
                   <th>IMAGE</th>
-                  <th>CATEGROY</th>
-                  <th>ACTOR</th>
+                  <th>ACTION</th>
                 </tr>
                 </tfoot>
                 <tbody>
                 <tr th:each="movie : ${movies}">
-                  <td>
-                    <a class="btn btn-warning" th:href="@{/AdminMovies/edit/{id}(id=${movie.id})}">
-                      <i class="fas fa-edit"></i>
-                    </a>
-                    <a class="btn btn-danger" th:href="@{/AdminMovies/delete/{id}(id=${movie.id})}">
-                      <i class="fas fa-trash-alt"></i>
-                    </a>
-                  </td>
                   <td th:text="${movie.name}"></td>
-                  <!--                      <td th:text="${movie.originName}"></td>-->
-                  <!--                      <td th:text="${movie.contentMovies}"></td>-->
-                  <td th:text="${movie.typeMovies}"></td>
-                  <td th:text="${movie.timeMovies}"></td>
-                  <td th:text="${movie.qualityName}"></td>
-                  <td th:text="${movie.year}"></td>
-                  <td th:text="${movie.countryName}"></td>
-                  <!--                      <td th:text="${movie.slug}"></td>-->
-                  <td th:text="${movie.episodeCurrent} +'/'+ ${movie.episodeTotal}" ></td>
-                  <td></td>
-                  <td th:text="${movie.directorName}"></td>
                   <td>
                     <ul th:if="${movie.poster}">
                       <li style=" list-style: none" th:each="poster1 : ${movie.poster}">
@@ -147,26 +111,18 @@
                     <span th:unless="${movie.poster}">No posters available</span>
                   </td>
                   <td>
-                    <ul style="padding: 0px;">
-                      <li style=" list-style: none" th:each="categorie : ${movie.categories}" th:text="${categorie.categoryName}"></li>
-                    </ul>
+                    <a class="btn btn-primary" th:href="@{/Admin/PreMovies/Add/{id}(id=${movie.id})}">
+                      Add
+                    </a>
                   </td>
-                  <td>
-                    <ul style="padding: 0px;">
-                      <li style=" list-style: none " th:each="actor : ${movie.actors}" th:text="${actor.actorName}"></li>
-                    </ul>
-                  </td>
-
                 </tr>
                 </tbody>
               </table>
             </div>
           </div>
-
         </div>
       </div>
       <!-- /.container-fluid -->
-
     </div>
     <!-- End of Main Content -->
 
@@ -184,20 +140,20 @@
 
 <!-- Logout Modal-->
 <!-- Bootstrap core JavaScript-->
-<script th:src="@{vendor/jquery/jquery.min.js}"></script>
-<script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
 <!-- Core plugin JavaScript-->
-<script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
+<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
 
 <!-- Custom scripts for all pages-->
-<script th:src="@{js/sb-admin-2.min.js}"></script>
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
 
 <!-- Page level plugins -->
-<script th:src="@{vendor/datatables/jquery.dataTables.min.js}"></script>
-<script th:src="@{vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
 
 <!-- Page level custom scripts -->
-<script th:src="@{js/demo/datatables-demo.js}"></script>
+<script th:src="@{/js/demo/datatables-demo.js}"></script>
 </body>
 </html>

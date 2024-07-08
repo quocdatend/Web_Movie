@@ -26,7 +26,7 @@ public class CategoryController {
     public String showAddForm(Model model) {
         model.addAttribute("category", new Category());
         model.addAttribute("title", "Thêm mới danh mục");
-        model.addAttribute("action", "/categories");
+        model.addAttribute("action", "/AdminMovies/categories");
         return "Admin/Movie/category-form";
     }
 
@@ -38,23 +38,23 @@ public class CategoryController {
     }
 
     // Form sửa danh mục
-    @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        Category category = categoryService.getCategoryById(id);
-        model.addAttribute("category", category);
-        model.addAttribute("title", "Chỉnh sửa danh mục");
-        model.addAttribute("action", "/categories/" + id);
-        return "Admin/Movie/category-form";
-    }
-    // Xử lý cập nhật danh mục
-    @PutMapping("/{id}")
-    public String updateCategory(@PathVariable Long id, @ModelAttribute("category") Category categoryDetails) {
-        categoryService.updateCategory(id, categoryDetails);
-        return "redirect:/AdminMovies/categories";
-    }
+//    @GetMapping("/{id}/edit")
+//    public String showEditForm(@PathVariable Long id, Model model) {
+//        Category category = categoryService.getCategoryById(id);
+//        model.addAttribute("category", category);
+//        model.addAttribute("title", "Chỉnh sửa danh mục");
+//        model.addAttribute("action", "/AdminMovies/categories/" + id);
+//        return "Admin/Movie/category-form";
+//    }
+//    // Xử lý cập nhật danh mục
+//    @PutMapping("/{id}")
+//    public String updateCategory(@PathVariable Long id, @ModelAttribute("category") Category categoryDetails) {
+//        categoryService.updateCategory(id, categoryDetails);
+//        return "redirect:/AdminMovies/categories";
+//    }
 
     // Xóa danh mục
-    @DeleteMapping("/{id}")
+    @PostMapping("/{id}")
     public String deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
         return "redirect:/AdminMovies/categories";

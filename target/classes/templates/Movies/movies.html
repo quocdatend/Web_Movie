@@ -64,55 +64,33 @@
 			</div>
 		</div>
 		<hr />
-		<div class="row portfolio-item">
-			<div class="col-lg-3 col-md-4 col-sm-6 soon released">
+		<div class="row portfolio-item" >
+			<div class="col-md-4 col-sm-6 soon released" th:each="movie : ${movies}">
 				<div class="single-portfolio">
 					<div class="single-portfolio-img">
-						<img  th:src="@{/assets/img/portfolio/portfolio1.png}" alt="portfolio" />
-						<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
+						<img  th:src="@{${movie.poster[0].posterUrl}}" alt="portfolio" />
+						<a th:if="${movie.TrailerMovies.size() > 0}"
+						   th:href="${movie.TrailerMovies[0].trailerUrl}"  class="popup-youtube">
 							<i class="icofont icofont-ui-play"></i>
 						</a>
 					</div>
 					<div class="portfolio-content">
-						<h2>Boyz II Men</h2>
-						<div class="review">
-							<div class="author-review">
-								<i class="icofont icofont-star"></i>
-								<i class="icofont icofont-star"></i>
-								<i class="icofont icofont-star"></i>
-								<i class="icofont icofont-star"></i>
-								<i class="icofont icofont-star"></i>
+						<a th:href="@{/Movies/movie-details/{id}(id=${movie.id})}">
+							<h2 th:text="${movie.name}"></h2>
+							<div class="review">
+								<div class="author-review">
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+									<i class="icofont icofont-star"></i>
+								</div>
+								<h4 th:text="${movie.episodeCurrent} +'/'+ ${movie.episodeTotal}"></h4>
 							</div>
-							<h4>180k voters</h4>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-lg-3 col-md-4 col-sm-6 soon">
-				<div class="single-portfolio">
-					<div class="single-portfolio-img">
-						<img  th:src="@{/assets/img/portfolio/portfolio3.png}" alt="portfolio" />
-						<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-							<i class="icofont icofont-ui-play"></i>
 						</a>
 					</div>
-					<div class="portfolio-content">
-						<h2>The Lost City of Z</h2>
-						<div class="review">
-							<div class="author-review">
-								<i class="icofont icofont-star"></i>
-								<i class="icofont icofont-star"></i>
-								<i class="icofont icofont-star"></i>
-								<i class="icofont icofont-star"></i>
-								<i class="icofont icofont-star"></i>
-							</div>
-							<h4>180k voters</h4>
-						</div>
-					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
 </section><!-- portfolio section end -->

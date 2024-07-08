@@ -85,27 +85,11 @@ public class AdminMoviesController {
     public String editMovie(
             @RequestParam("id") Long id,
             @ModelAttribute("movie") Movies movie,
-            @RequestParam(value = "posterUrl", required = false) MultipartFile posterUrl,
-            @RequestParam(value = "thumbUrl", required = false) MultipartFile thumbUrl,
-            @RequestParam("idp") String idp,
-            Model model
-            ,BindingResult result) throws IOException {
+            Model model,
+            BindingResult result) throws IOException {
         if (result.hasErrors()) {
             movie.setId(id);
             return "Admin/EditMovie";
-        }
-        if(thumbUrl != null || posterUrl != null){
-            Poster exitposter =  new Poster();
-            exitposter.setMovie(movie);
-            if (thumbUrl != null ) {
-                String thumbUrlString = cloudinaryService.uploadImage(thumbUrl);
-                exitposter.setThumbUrl(thumbUrlString);
-            }
-            if (posterUrl != null ) {
-                String posterUrlString = cloudinaryService.uploadImage(posterUrl);
-                exitposter.setPosterUrl(posterUrlString);
-            }
-            Long idpl = Long.parseLong(idp); // Convert String to Long
         }
         adminMoviesService.editmovie(movie);
         model.addAttribute("movie", adminMoviesService.getAllMovies());
@@ -207,5 +191,33 @@ public class AdminMoviesController {
         model.addAttribute("episode",a);
         model.addAttribute("episodes", episodes);
         return "Admin/Movie/addEpisode";
+    }
+    // quan ly image
+    @GetMapping("/addPoster/{id}")
+    public String showAddPosterForm(Model model, @PathVariable Long id) {
+        Movies movies = adminMoviesService.findid(id);
+        model.addAttribute("movie", movies);
+        model.addAttribute("poster", new Poster());
+        return "Admin/Movie/addPoster"; // Create a form view for adding posters
+    }
+    @PostMapping("/addPoster")
+    public String addPoster(@RequestParam("posterUrl") MultipartFile posterUrl,
+                            @RequestParam("movieId") Long movieId,
+                            @RequestParam("posterid") Long posterid,
+                            @RequestParam("thumbUrl") MultipartFile thumbUrl,
+                            Model model) throws IOException {
+        String thumbUrlString = cloudinaryService.uploadImage(thumbUrl);
+        String posterUrlString = cloudinaryService.uploadImage(posterUrl);
+
+        Poster poster = new Poster();
+        poster.setThumbUrl(thumbUrlString);
+        poster.setPosterUrl(posterUrlString);
+        Movies movie = adminMoviesService.findid(movieId);
+        if (movie == null) {
+            return "redirect:/error"; // Redirect to an error page or handle appropriately
+        }
+        poster.setMovie(movie);
+        posterService.editPoster(movieId,poster);
+        return "redirect:/AdminMovies/addPoster/" + movieId;
     }
 }
