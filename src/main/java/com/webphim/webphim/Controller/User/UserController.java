@@ -169,22 +169,4 @@ public class UserController {
         }
         return "User/Payment/Successfully";
     }
-    @SneakyThrows
-    @GetMapping("/SaveMovie")
-    public String saveMovieHistory(@RequestParam String id, @AuthenticationPrincipal UserDetails userDetails) {
-        Users users = usersService.getUserByUsername(userDetails.getUsername());
-        Movies movies = adminMoviesService.findid(Long.valueOf(id));
-        LocalTime localTime = LocalTime.now();
-        if(movies == null) {
-            return "redirect:/Home";
-        }
-        if(watchHistoryService.checkHistory(users, movies)) {
-            WatchHistory watchHistory = new WatchHistory();
-            watchHistory.setUsers(users);
-            watchHistory.setMovie(movies);
-            watchHistory.setTime(Time.valueOf(localTime));
-            watchHistoryService.saveWatchHistory(watchHistory);
-        }
-        return "redirect:/Home";
-    }
 }
