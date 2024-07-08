@@ -26,14 +26,25 @@
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
-
+	<style>
+		.button-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+	</style>
 </head>
 <body>
 <!-- Page loader -->
 <div id="preloader"></div>
 <div th:replace="Header :: Header"></div>
 <!-- breadcrumb area start -->
-<section class="breadcrumb-area">
+<section class="breadcrumb-area" th:style="${movie} != null ? 'background-image: url(' + @{${movie.poster[0].thumbUrl}} + ');' : ''">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
@@ -53,8 +64,7 @@
 					<div class="transformers-content">
 						<img th:src="@{${movie.poster[0].posterUrl}}" alt="about" />
 						<div class="news-date">
-							<h2><span>NOV</span> 25</h2>
-							<h1>2017</h1>
+							<h1 th:text="${movie.year}"></h1>
 						</div>
 					</div>
 				</div>
@@ -149,63 +159,37 @@
 							<i class="icofont icofont-ui-play" style=" margin-left: 50%;"></i>
 						</a>
 					</div>
-					<div class="details-reply">
-						<h2>Leave a Reply</h2>
-						<form action="#">
-							<div class="row">
-								<div class="col-lg-4">
-									<div class="select-container">
-										<input type="text" placeholder="Name"/>
-										<i class="icofont icofont-ui-user"></i>
-									</div>
-								</div>
-								<div class="col-lg-4">
-									<div class="select-container">
-										<input type="text" placeholder="Email"/>
-										<i class="icofont icofont-envelope"></i>
-									</div>
-								</div>
-								<div class="col-lg-4">
-									<div class="select-container">
-										<input type="text" placeholder="Phone"/>
-										<i class="icofont icofont-phone"></i>
-									</div>
-								</div>
-								<div class="col-lg-12">
-									<div class="textarea-container">
-										<textarea placeholder="Type Here Message"></textarea>
-										<button><i class="icofont icofont-send-mail"></i></button>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-					<div class="details-comment">
-						<a class="theme-btn theme-btn2" href="#">Post Comment</a>
-						<p>You may use these HTML tags and attributes: You may use these HTML tags and attributes: You may use these HTML tags and attributes: </p>
-					</div>
-					<div class="details-thumb">
-						<div class="details-thumb-prev">
-							<div class="thumb-icon">
-								<i class="icofont icofont-simple-left"></i>
-							</div>
-							<div class="thumb-text">
-								<h4>Previous Post</h4>
-								<p>Standard Post With Gallery</p>
-							</div>
+					<div>
+						<p>Chọn tập phim</p>
+						<div class="button-container">
+							<button th:each="e : ${movie.episodes}" th:text="${e.name}"  th:data-href="@{/Movies/watching/{id}/{ide}(id=${movie.id}, ide=${e.episodeId})}" onclick="location.href=this.getAttribute('data-href');" ></button>
 						</div>
-						<div class="details-thumb-next">
-							<div class="thumb-text">
-								<h4>Next Post</h4>
-								<p>Standard Post With Preview Image</p>
-							</div>
-							<div class="thumb-icon">
-								<i class="icofont icofont-simple-right"></i>
+					</div>
+					<div th:replace="Movies/Comments :: Comments"></div>
+						<div class="details-comment">
+							<div class="details-thumb">
+								<div class="details-thumb-prev">
+									<div class="thumb-icon">
+										<i class="icofont icofont-simple-left"></i>
+									</div>
+									<div class="thumb-text">
+										<h4>Previous Post</h4>
+										<p>Standard Post With Gallery</p>
+									</div>
+								</div>
+								<div class="details-thumb-next">
+									<div class="thumb-text">
+										<h4>Next Post</h4>
+										<p>Standard Post With Preview Image</p>
+									</div>
+									<div class="thumb-icon">
+										<i class="icofont icofont-simple-right"></i>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 			<div class="col-lg-3 text-center text-lg-left">
 				<div class="portfolio-sidebar">
 					<img th:src="@{/assets/img/sidebar/sidebar1.png}" alt="sidebar" />
@@ -217,6 +201,68 @@
 	</div>
 </section><!-- details area end -->
 <div th:replace="Footer :: Footer"></div>
+<script>
+		function contentReply(postId) {
+			var element = document.getElementById('content-reply-' + postId);
+			if (element.style.display === "none") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+		}
+		function contentReplyChild(postId) {
+			var element = document.getElementById('content-reply-child-' + postId);
+			if (element.style.display === "none") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+		}
+        function likePost(postId) {
+            $.ajax({
+                url: '/Movies/movie-details/post-comment/like/' + postId,
+                type: 'GET',
+                success: function(data) {
+                    $('#like-count-' + postId).text(data[0]);
+                    $('#dislike-count-' + postId).text(data[1]);
+                }
+            });
+        }
+
+        function dislikePost(postId) {
+            $.ajax({
+                url: '/Movies/movie-details/post-comment/disLike/' + postId,
+                type: 'GET',
+                success: function(data) {
+                    $('#like-count-' + postId).text(data[0]);
+                    $('#dislike-count-' + postId).text(data[1]);
+                }
+            });
+        }
+
+        function likeChildPost(postId) {
+            $.ajax({
+                url: '/Movies/movie-details/post-comment/Child/like/' + postId,
+                type: 'GET',
+                success: function(data) {
+                    $('#like-count-child-' + postId).text(data[0]);
+                    $('#dislike-count-child-' + postId).text(data[1]);
+                }
+            });
+        }
+
+        function dislikeChildPost(postId) {
+            $.ajax({
+                url: '/Movies/movie-details/post-comment/Child/disLike/' + postId,
+                type: 'GET',
+                success: function(data) {
+                    $('#like-count-child-' + postId).text(data[0]);
+                    $('#dislike-count-child-' + postId).text(data[1]);
+                }
+            });
+        }
+    </script>
+
 <!-- jquery main JS -->
 <script th:src="@{/assets/js/jquery.min.js}"></script>
 <!-- Bootstrap JS -->

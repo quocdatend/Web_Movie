@@ -1,26 +1,95 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Form Danh mục</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Quản lý phim</title>
+
+    <!-- Phông chữ tùy chỉnh cho mẫu này -->
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i}" rel="stylesheet" />
+
+    <!-- Kiểu tùy chỉnh cho mẫu này -->
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet" />
+
+    <!-- Kiểu tùy chỉnh cho trang này -->
+    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet" />
 </head>
-<body>
 
-<div class="container">
-    <h2 th:text="${title}"></h2>
-    <form th:object="${category}" th:action="${action}" method="post">
-        <div class="form-group">
-            <label>Tên danh mục:</label>
-            <input type="text" th:field="*{categoryName}" class="form-control">
+<body id="page-top">
+<!-- Trình bao bọc trang -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <section th:replace="Admin/Navbar :: Navbar">
+
+    </section>
+    <!-- Kết thúc Sidebar -->
+
+    <!-- Trình bao bọc nội dung -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Nội dung chính -->
+        <div id="content">
+            <!-- Thanh điều hướng trên cùng -->
+            <section th:replace="Admin/Header :: Header">
+
+            </section>
+            <!-- Kết thúc Thanh điều hướng trên cùng -->
+
+            <!-- Bắt đầu Nội dung Trang -->
+            <div class="container-fluid">
+                <div class="container">
+                    <h2 th:text="${title}"></h2>
+                    <form th:object="${category}" th:action="${action}" method="post">
+                        <div class="form-group">
+                            <label>Tên danh mục:</label>
+                            <input type="text" th:field="*{categoryName}" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Slug:</label>
+                            <input type="text" th:field="*{slug}" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
         </div>
-        <div class="form-group">
-            <label>Slug:</label>
-            <input type="text" th:field="*{slug}" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+        <!-- Kết thúc Nội dung chính -->
+
+        <!-- Footer -->
+
+        <!-- Kết thúc Footer -->
+    </div>
+    <!-- Kết thúc Trình bao bọc nội dung -->
 </div>
+<!-- Kết thúc Trình bao bọc trang -->
 
+<!-- Nút cuộn lên -->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Modal Đăng xuất -->
+
+<!-- JavaScript cốt lõi Bootstrap -->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- JavaScript plugin cốt lõi -->
+<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Tập lệnh tùy chỉnh cho tất cả các trang -->
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<!-- Các plugin cấp trang -->
+<script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+<script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+<!-- Tập lệnh tùy chỉnh cấp trang -->
+<script th:src="@{/js/demo/datatables-demo.js}"></script>
 </body>
 </html>

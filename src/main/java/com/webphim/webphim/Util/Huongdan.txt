@@ -1,5 +1,0 @@
-Util
-Chứa các lớp tiện ích cho các chức năng khác nhau trong dự án, chẳng hạn như:
-Lớp tiện ích xử lý chuỗi
-Lớp tiện ích xử lý tệp
-Lớp tiện ích xử lý email
