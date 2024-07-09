@@ -213,11 +213,12 @@ public class AdminMoviesController {
         poster.setThumbUrl(thumbUrlString);
         poster.setPosterUrl(posterUrlString);
         Movies movie = adminMoviesService.findid(movieId);
+        Long idp = movie.getPoster().get(0).getIdPoster();
         if (movie == null) {
             return "redirect:/error"; // Redirect to an error page or handle appropriately
         }
         poster.setMovie(movie);
-        posterService.editPoster(movieId,poster);
+        posterService.editPoster(idp,poster);
         return "redirect:/AdminMovies/addPoster/" + movieId;
     }
 }

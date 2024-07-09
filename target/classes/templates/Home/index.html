@@ -29,7 +29,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<style>
+.pagination a {
+  color: white;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+    background-color: black;
 
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+	</style>
 </head>
 <body>
 <!-- Page loader -->
@@ -271,9 +292,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 		<div class="row">
 			<div class="col-md-9">
 				<div class="video-area">
-					<img th:src="@{/assets/img/video/video1.png}" alt="video" />
-					<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-						<i class="icofont icofont-ui-play"></i>
+					<img th:src="@{${movies1.poster[0].thumbUrl}}" alt="video" />
+					<a th:if="${movies1.TrailerMovies.size() > 0}"
+					   th:href="${movies1.TrailerMovies[0].trailerUrl}" class="popup-youtube">
+						<i class="icofont icofont-ui-play" ></i>
 					</a>
 					<div class="video-text">
 						<h2>Angle of Death</h2>
@@ -294,17 +316,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 				<div class="row">
 					<div class="col-md-12 col-sm-6">
 						<div class="video-area">
-							<img th:src="@{/assets/img/video/video2.png}" alt="video" />
-							<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-								<i class="icofont icofont-ui-play"></i>
+							<img th:src="@{${movies0.poster[0].thumbUrl}}" alt="video" />
+							<a th:if="${movies1.TrailerMovies.size() > 0}"
+							   th:href="${movies0.TrailerMovies[0].trailerUrl}" class="popup-youtube">
+								<i class="icofont icofont-ui-play" ></i>
 							</a>
 						</div>
 					</div>
 					<div class="col-md-12 col-sm-6">
 						<div class="video-area">
-							<img th:src="@{/assets/img/video/video3.png}" alt="video" />
-							<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-								<i class="icofont icofont-ui-play"></i>
+							<img th:src="@{${movies1.poster[0].thumbUrl}}" alt="video" />
+							<a th:if="${movies1.TrailerMovies.size() > 0}"
+							   th:href="${movies0.TrailerMovies[0].trailerUrl}" class="popup-youtube">
+								<i class="icofont icofont-ui-play" ></i>
 							</a>
 						</div>
 					</div>

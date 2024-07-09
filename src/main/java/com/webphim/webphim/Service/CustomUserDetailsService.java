@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -57,5 +58,18 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public Optional<Users> findByUsername (String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
+    }
+    public boolean checkLogin(String role) {
+        if(role.equals("[USER]")) {
+            return true;
+        }
+        return false;
+    }
+    public boolean checkPre(String role) {
+//        System.out.println(role);
+        if(role.equals("[PRE]")) {
+            return true;
+        }
+        return false;
     }
 }
