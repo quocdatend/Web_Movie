@@ -14,9 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -26,9 +23,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests(authorize -> authorize
-                        .requestMatchers( "/", "/Home", "/Home/**", "/Login_Signup", "/logout", "/assets/**", "/Blog/**", "/Movies", "/Movies/**","/Signup", "/ForgetPass","/ForgetPass/**",  "/UploadImage").permitAll()
-                        .requestMatchers("/User/**").hasAnyAuthority("USER", "PRE")
-                        .requestMatchers("/Admin/**", "/css/**", "/img/**", "/scss/**", "/vendor/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers( "/", "/Home", "/Home/**", "/Login_Signup", "/logout", "/css/**", "/img/**", "/scss/**", "/vendor/**", "/assets/**","/Signup", "/ForgetPass","/ForgetPass/**").permitAll()
+                        .requestMatchers("/User/**", "/Movies/**").hasAnyAuthority("USER","PRE")
+//                        .requestMatchers("/User/**").hasAnyAuthority("PRE")
+                        .requestMatchers("/Admin/**", "/AdminMovies/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
 
@@ -37,7 +35,7 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/Login_Signup")
                         .loginProcessingUrl("/Login_Signup")
-                        .defaultSuccessUrl("/Home", true)
+                        .successForwardUrl("/RedirectPage")
                         .failureUrl("/Login_Signup?error")
                         .permitAll())
                 .logout(logout -> logout

@@ -21,5 +21,7 @@ public class PreMovieService {
         return preMoviesRepository.findAll(pageRequest);
     }
     public List<PreMovies> GetAllNoAtt() { return preMoviesRepository.findAll();}
-
+    public List<PreMovies> getById(long id) {
+        return preMoviesRepository.findById(id).stream().toList();
+    }
 }

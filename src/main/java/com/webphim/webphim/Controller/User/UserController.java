@@ -41,13 +41,22 @@ public class UserController {
     private WatchHistoryService watchHistoryService;
     @Autowired
     private AdminMoviesService adminMoviesService;
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private CategoryService categoryService;
     @GetMapping("/Profile")
     public String showProfileUser(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+            if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString()))
+                return "redirect:/Login_Signup";
+        }
         Users user = usersService.getUserByUsername(userDetails.getUsername());
         ImageUser imageUser = imageUserService.getImageUserById(user.getId());
         List<WatchHistory> watchHistory = watchHistoryService.findByUserId(user.getId());
         model.addAttribute("user", user);
         model.addAttribute("watchHistory", watchHistory);
+        model.addAttribute("Category",categoryService.getAllCategories());
         if(imageUser.getUrl()==null) {
             model.addAttribute("Avatar", imageUser.getAvatarDefault());
         } else  {
@@ -58,6 +67,13 @@ public class UserController {
 
     @PostMapping("/UploadImageToCloud")
     public String uploadAvatarUserToCloud(Model model, @RequestParam MultipartFile AvatarUrl, @AuthenticationPrincipal UserDetails userDetails) {
+        if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+            if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString()))
+                return "redirect:/Login_Signup";
+        }
+        if(AvatarUrl.isEmpty()) {
+            return "redirect:/User/Profile";
+        }
         Users user = usersService.getUserByUsername(userDetails.getUsername());
         ImageUser imageUser = imageUserService.getImageUserById(user.getId());
         imageUserService.updateImageUserById(user.getId(), AvatarUrl);
@@ -66,8 +82,10 @@ public class UserController {
         return "redirect:/User/Profile";
     }
     @GetMapping("/Payment")
-    public String createPayment(HttpServletRequest req, HttpServletResponse resp, Model model) throws ServletException, IOException {
-
+    public String createPayment(HttpServletRequest req, HttpServletResponse resp, Model model, @AuthenticationPrincipal UserDetails userDetails) throws ServletException, IOException {
+        if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+            return "redirect:/Login_Signup";
+        }
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
@@ -156,6 +174,9 @@ public class UserController {
                                  @RequestParam(value = "vnp_TxnRef") String vnp_TxnRef,
                                  @RequestParam(value = "vnp_SecureHash") String vnp_SecureHash,
                                  Model model,@AuthenticationPrincipal UserDetails userDetails ) {
+        if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+            return "redirect:/Login_Signup";
+        }
         if(vnp_TransactionStatus.equals("00")) {
             // thêm các tham số
             model.addAttribute("status", true);
