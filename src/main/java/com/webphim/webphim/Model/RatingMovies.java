@@ -12,7 +12,7 @@ import lombok.Setter;
 public class RatingMovies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idRating;
+    private Long idRating;
 
     @ManyToOne
     @JoinColumn(name = "usersId", nullable = false)
@@ -23,7 +23,7 @@ public class RatingMovies {
 
     @ManyToOne
     @JoinColumn(name = "moviesId", nullable = false)
-    private Movies movies;
+    private Movies movie;
 
     // Getters and setters
 }

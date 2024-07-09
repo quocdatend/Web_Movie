@@ -47,13 +47,10 @@ public class HomeController {
                         @RequestParam(defaultValue = "3") int size){
         List<Movies> moviesList = new ArrayList<>();
         List<Movies> movies = adminMoviesService.getAllMovies();
-
         model.addAttribute("movies",movies);
         model.addAttribute("movies0",movies.get(0));
         model.addAttribute("movies1",movies.get(1));
         model.addAttribute("Category",categoryService.getAllCategories());
-
-
         Page<Movies> Pmovies = adminMoviesService.GetAll(page,size);
         model.addAttribute("listMovie", Pmovies);
         model.addAttribute("totalPages", Pmovies.getTotalPages());
