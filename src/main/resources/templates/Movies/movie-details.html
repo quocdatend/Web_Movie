@@ -64,7 +64,15 @@
 					<div class="transformers-content">
 						<img th:src="@{${movie.poster[0].posterUrl}}" alt="about" />
 						<div class="news-date">
-							<h1 th:text="${rating}">Score</h1>
+							<h1 th:text="${rating} +'/5'">Score</h1>
+							<!-- Iterate over the rating and display stars based on the rating value -->
+							<div>
+								<!-- Hiển thị sao đầy -->
+								<span th:each="star : ${#numbers.sequence(1, rating)}" style="font-size: 24px;">&#9733;</span>
+
+								<!-- Hiển thị sao không đầy -->
+								<span th:each="star : ${#numbers.sequence(rating + 1, 5)}" style="font-size: 24px;">&#9734;</span>
+							</div>
 						</div>
 					</div>
 				</div>
