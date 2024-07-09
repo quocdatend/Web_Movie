@@ -56,6 +56,9 @@ public class Movies {
     private PreMovies preMovies;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private List<RatingMovies> ratingMovies;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<Poster> poster;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
@@ -74,5 +77,4 @@ public class Movies {
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<Episodes> episodes;
-
 }
