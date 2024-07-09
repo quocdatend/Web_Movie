@@ -64,7 +64,7 @@
 					<div class="transformers-content">
 						<img th:src="@{${movie.poster[0].posterUrl}}" alt="about" />
 						<div class="news-date">
-							<h1 th:text="${movie.year}"></h1>
+							<h1 th:text="${rating}">Score</h1>
 						</div>
 					</div>
 				</div>
@@ -87,6 +87,13 @@
 								</div>
 								<div class="transformers-right">
 									Stephen McFeely, Christopher Markus
+								</div>
+							</li>
+							<li>
+								<div class="transformers-left">
+									Year:
+								</div>
+								<div class="transformers-right" th:text="${movie.year}">
 								</div>
 							</li>
 							<li>
@@ -165,10 +172,27 @@
 							<button th:each="e : ${movie.episodes}" th:text="${e.name}"  th:data-href="@{/Movies/watching/{id}/{ide}(id=${movie.id}, ide=${e.episodeId})}" onclick="location.href=this.getAttribute('data-href');" ></button>
 						</div>
 					</div>
+					<div>
+						<p>Rating for Movie</p>
+						<form th:action="@{/Movies/submit_rating}" method="post">
+							<input type="hidden" name="movieId" th:value="${movie.id}" />
+							<br>
+							<input type="radio" id="rating_1" name="rating" value="1"> 1 Star
+							<input type="radio" id="rating_2" name="rating" value="2"> 2 Stars
+							<input type="radio" id="rating_3" name="rating" value="3"> 3 Stars
+							<input type="radio" id="rating_4" name="rating" value="4"> 4 Stars
+							<input type="radio" id="rating_5" name="rating" value="5"> 5 Stars
+							<br>
+							</br>
+							<button type="submit">Submit Rating</button>
+						</form>
+					</div>
+
 					<div th:replace="Movies/Comments :: Comments"></div>
 
-					</div>
 				</div>
+			</div>
+
 			<div class="col-lg-3 text-center text-lg-left">
 				<div class="portfolio-sidebar">
 					<img th:src="@{/assets/img/sidebar/sidebar1.png}" alt="sidebar" />

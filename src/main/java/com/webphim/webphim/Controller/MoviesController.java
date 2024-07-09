@@ -5,6 +5,7 @@
 package com.webphim.webphim.Controller;
 
 import com.webphim.webphim.Model.*;
+import com.webphim.webphim.Reponsitory.RatingMoviesRepository;
 import com.webphim.webphim.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,6 +29,8 @@ import java.util.List;
 @RequestMapping("/Movies")
 public class MoviesController {
     @Autowired
+    private RatingService ratingService;
+    @Autowired
     private AdminMoviesService adminMoviesService;
     @Autowired
     private CommentsMovieService commentsMovieService;
@@ -47,6 +50,8 @@ public class MoviesController {
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
     private PreMovieService preMovieService;
+    @Autowired
+    private RatingMoviesRepository ratingMoviesRepository;
     @GetMapping("/movie-details/{id}")
     public String movies(@PathVariable long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
         if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
@@ -79,6 +84,7 @@ public class MoviesController {
         model.addAttribute("listAvatarUserComment", imageUserCommentListNew);
         model.addAttribute("listAvatarUserCommentLevel", imageUserCommentLevelListNew);
         model.addAttribute("nameLink", "movie-details");
+        model.addAttribute("rating",ratingService.calculateAverageRating(adminMoviesService.findid(id)));
         return "Movies/movie-details";
     }
     @PostMapping("/movie-details/post-comment")
@@ -142,7 +148,7 @@ public class MoviesController {
             if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString()))
                 return "redirect:/Login_Signup";
         }
-        List<PreMovies> preMovies = preMovieService.getById(id);
+        List<PreMovies> preMovies = preMovieService.getByMovieId(id);
         if(!preMovies.isEmpty()) {
             if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString())){
                 return "redirect:/User/Payment";
@@ -194,7 +200,7 @@ public class MoviesController {
             if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString()))
                 return "redirect:/Login_Signup";
         }
-        List<PreMovies> preMovies = preMovieService.getById(id);
+        List<PreMovies> preMovies = preMovieService.getByMovieId(id);
         if(!preMovies.isEmpty()) {
             if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString())){
                 return "redirect:/User/Payment";
@@ -256,5 +262,19 @@ public class MoviesController {
         model.addAttribute("movies",movies);
         model.addAttribute("Category",categoryService.getAllCategories());
         return "Movies/movies";
+    }
+    @PostMapping("/submit_rating")
+    public String submitRating(@RequestParam("movieId") Long movieId,
+                               @RequestParam("rating") int rating,
+                               @AuthenticationPrincipal UserDetails userDetails,
+                               Model model) {
+        Movies movie = adminMoviesService.findid(movieId);
+        Users users = usersService.getUserByUsername(userDetails.getUsername());
+        RatingMovies newRating = new RatingMovies();
+        newRating.setMovie(movie);
+        newRating.setRating(rating);
+        newRating.setUsers(users);
+        ratingMoviesRepository.save(newRating);
+        return "redirect:/Movies/movie-details/" + movieId;
     }
 }
