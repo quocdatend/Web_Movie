@@ -24,11 +24,11 @@ public class Admin implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 32)
     private String username;
-    @Column(nullable = false, length = 255) // Consider adding unique constraint
+    @Column(nullable = false, length = 320) // Consider adding unique constraint
     private String email;
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 60)
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "AdminRole",

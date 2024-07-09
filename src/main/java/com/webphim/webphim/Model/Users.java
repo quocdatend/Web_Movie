@@ -29,12 +29,12 @@ public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 32)
     private String username;
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 320)
     @Email
     private String email;
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 60)
     private String password;
     @Column(nullable = false, length = 11)
     private String phone;
