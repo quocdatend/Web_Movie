@@ -24,4 +24,8 @@ public class PreMovieService {
     public List<PreMovies> getById(long id) {
         return preMoviesRepository.findById(id).stream().toList();
     }
+
+    public List<PreMovies> getByMovieId(Long id) {
+        return preMoviesRepository.findByMovieId(id);
+    }
 }
