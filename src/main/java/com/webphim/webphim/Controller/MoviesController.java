@@ -43,8 +43,16 @@ public class MoviesController {
     private EpisodesService episodesService;
     @Autowired
     private WatchHistoryService watchHistoryService;
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private PreMovieService preMovieService;
     @GetMapping("/movie-details/{id}")
     public String movies(@PathVariable long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+            if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString()))
+                return "redirect:/Login_Signup";
+        }
         List<CommentsMovie> commentsMovieList = commentsMovieService.getAllCommentsInMovie(id);
         List<CommentLevel> commentLevelList = new ArrayList<>();
         List<ImageUser> imageUserCommentList = new ArrayList<>();
@@ -75,6 +83,9 @@ public class MoviesController {
     }
     @PostMapping("/movie-details/post-comment")
     public String postComment(@RequestParam String id, @RequestParam String nameLink, @RequestParam String title, @AuthenticationPrincipal UserDetails userDetails) {
+        if (!customUserDetailsService.checkPre(userDetails.getAuthorities().toString())) {
+            return "redirect:/User/Payment";
+        }
         LocalDateTime currentDateTime = LocalDateTime.now();
         Users users = usersService.getUserByUsername(userDetails.getUsername());
         CommentsMovie commentsMovie = new CommentsMovie();
@@ -87,6 +98,9 @@ public class MoviesController {
     }
     @PostMapping("/movie-details/post-comment/reply-comment")
     public String replyComment(@RequestParam String MovieId,@RequestParam String id, @RequestParam String nameLink, @RequestParam String title, @AuthenticationPrincipal UserDetails userDetails) {
+        if (!customUserDetailsService.checkPre(userDetails.getAuthorities().toString())) {
+            return "redirect:/User/Payment";
+        }
         LocalDateTime currentDateTime = LocalDateTime.now();
         Users users = usersService.getUserByUsername(userDetails.getUsername());
         CommentLevel commentLevel = new CommentLevel();
@@ -119,6 +133,16 @@ public class MoviesController {
     }
     @GetMapping("/watching/{id}")
     public String watching(@PathVariable long id, Model model, @AuthenticationPrincipal UserDetails userDetails){
+        if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+            if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString()))
+                return "redirect:/Login_Signup";
+        }
+        List<PreMovies> preMovies = preMovieService.getById(id);
+        if(!preMovies.isEmpty()) {
+            if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString())){
+                return "redirect:/User/Payment";
+            }
+        }
         List<CommentsMovie> commentsMovieList = commentsMovieService.getAllCommentsInMovie(id);
         List<CommentLevel> commentLevelList = new ArrayList<>();
         List<ImageUser> imageUserCommentList = new ArrayList<>();
@@ -161,6 +185,16 @@ public class MoviesController {
     }
     @RequestMapping("/watching/{id}/{ide}")
     public String watchEpisode(@PathVariable("id") Long id, @PathVariable("ide") Long episodeId, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+            if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString()))
+                return "redirect:/Login_Signup";
+        }
+        List<PreMovies> preMovies = preMovieService.getById(id);
+        if(!preMovies.isEmpty()) {
+            if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString())){
+                return "redirect:/User/Payment";
+            }
+        }
         Movies movies = adminMoviesService.findid(id);
         Users users = usersService.getUserByUsername(userDetails.getUsername());
         LocalTime localTime = LocalTime.now();
@@ -179,7 +213,11 @@ public class MoviesController {
     }
     @GetMapping("/search")
     public String findbyname(@RequestParam("maneM") String maneM,
-                             Model model){
+                             Model model, @AuthenticationPrincipal UserDetails userDetails){
+        if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+            if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString()))
+                return "redirect:/Login_Signup";
+        }
         List<Movies> movies =  adminMoviesService.searchMoviesByName(maneM);
         model.addAttribute("movies",movies);
         model.addAttribute("Category",categoryService.getAllCategories());
@@ -187,7 +225,11 @@ public class MoviesController {
     }
     @GetMapping("/Findbystyle/{cate}")
     public String findbystyle(@PathVariable String cate,
-                              Model model){
+                              Model model, @AuthenticationPrincipal UserDetails userDetails){
+        if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+            if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString()))
+                return "redirect:/Login_Signup";
+        }
         List<Movies> movies =  adminMoviesService.getAllMovies();
         List<Movies> movies1 = new ArrayList<>();
         for (Movies  movie: movies){
@@ -200,7 +242,11 @@ public class MoviesController {
         return "Movies/movies";
     }
     @GetMapping("/Findbycate/{id}")
-    public  String findbyCategory(@PathVariable Long id,Model model){
+    public  String findbyCategory(@PathVariable Long id,Model model, @AuthenticationPrincipal UserDetails userDetails){
+        if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+            if(!customUserDetailsService.checkPre(userDetails.getAuthorities().toString()))
+                return "redirect:/Login_Signup";
+        }
         List<Movies> movies = adminMoviesService.getMoviesByCategoryId(id);
         model.addAttribute("movies",movies);
         model.addAttribute("Category",categoryService.getAllCategories());

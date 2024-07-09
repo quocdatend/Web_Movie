@@ -101,14 +101,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 				<div class="mainmenu">
 					<ul id="primary-menu">
 						<li><a class="active" href="/Home">Home</a></li>
-						<li><a href="/Movie-list">Movies</a></li>
-						<li><a href="/Blog/celebrities">Chose style Movies <i class="icofont icofont-simple-down"></i></a>
+						<li><a href="/PreMovie-list">Premium</a></li>
+						<li><a th:href="@{/Movies/Findbystyle/{style}(style = single)}">Chose Type Movie <i class="icofont icofont-simple-down"></i></a>
 							<ul>
 								<li><a th:href="@{/Movies/Findbystyle/{style}(style = single)}">Single </a></li>
 								<li><a th:href="@{/Movies/Findbystyle/{style}(style = series)}">series </a></li>
 							</ul>
 						</li>
-						<li><a href="#">Chose category <i class="icofont icofont-simple-down"></i></a>
+						<li><a href="#">Chose Category <i class="icofont icofont-simple-down"></i></a>
 							<ul>
 								<li th:each="cate : ${Category}"><a th:href="@{/Movies/Findbycate/{cate}(cate=${cate.id})}" th:text="${cate.categoryName}"></a></li>
 							</ul>

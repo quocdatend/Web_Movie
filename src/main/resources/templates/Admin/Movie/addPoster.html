@@ -51,12 +51,18 @@
           </div>
           <!-- Form to add new poster -->
           <form th:action="@{/AdminMovies/addPoster}" method="post" enctype="multipart/form-data">
+            <h1>Poster </h1> </br>
             <input type="file" name="posterUrl" accept="image/*" required><br><br>
+
+            <h1>thumbUrl </h1>
+            </br>
             <input type="file" name="thumbUrl" accept="image/*" required><br><br>
             <input type="hidden" name="movieId" th:value="${movie.id}">
             <input type="hidden" name="posterid" th:value="${movie.poster[0].idPoster}">
             <input type="submit" value="Add Poster">
           </form>
+          </br>
+
           <div class="card-footer">
             <a th:href="@{/AdminMovies/edit/{movieId}(movieId=${movie.id})}" class="btn btn-secondary">Back to Movie Detail</a>
           </div>
