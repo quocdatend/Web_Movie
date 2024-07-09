@@ -13,7 +13,7 @@ public class ImageUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(length = 255)
+    @Column(length = 100)
     private String url;
 
     @OneToOne

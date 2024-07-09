@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,6 +90,6 @@ public class UsersService {
     public Users addUser(Users product) {
         return usersRepository.save(product);
     }
-
     public void save(Users user) {usersRepository.save(user);}
+    public List<Users> GetAllNoAtt() {return usersRepository.findAll();}
 }

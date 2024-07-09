@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,4 +40,5 @@ public class CommentLevelService {
         lists.add(commentLevel.stream().toList().get(0).getDislikes());
         return lists;
     }
+    public List<CommentLevel> getAll() {return commentLevelRepository.findAll();}
 }
