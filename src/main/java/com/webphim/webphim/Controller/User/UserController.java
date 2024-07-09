@@ -182,7 +182,7 @@ public class UserController {
             model.addAttribute("status", true);
             Users user = usersService.getUserByUsername(userDetails.getUsername());
             user.setPre(true);
-            usersService.saveUser(user);
+            usersService.save(user);
             usersService.setPremiumRole(userDetails.getUsername());
         } else {
             // tạo thêm các tham số khi thanh toán thất bại tại đây
