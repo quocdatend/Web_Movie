@@ -46,6 +46,7 @@
         <div class="select-container">
           <p>
             <span th:text="${comment.getUsers().getUsername()}"></span>
+            <span th:if="${comment.getUsers().getAuthorities().toString()=='[PRE]'}" style="color:#000dff;">[PRE]</span>
             <span>  |  </span>
             <span th:text="${comment.commentTime}"></span>
           </p>
@@ -68,6 +69,7 @@
               <div class="select-container">
                 <p>
                   <span th:text="${childComment.getUsers().getUsername()}"></span>
+                  <span th:if="${comment.getUsers().getAuthorities().toString()=='[PRE]'}" style="color:#000dff;">[PRE]</span>
                   <span>  |  </span>
                   <span th:text="${childComment.commentTime}"></span>
                 </p>

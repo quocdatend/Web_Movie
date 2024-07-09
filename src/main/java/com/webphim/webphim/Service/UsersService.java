@@ -89,4 +89,6 @@ public class UsersService {
     public Users addUser(Users product) {
         return usersRepository.save(product);
     }
+
+    public void save(Users user) {usersRepository.save(user);}
 }

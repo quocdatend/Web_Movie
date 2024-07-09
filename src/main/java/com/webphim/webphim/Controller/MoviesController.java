@@ -84,7 +84,9 @@ public class MoviesController {
     @PostMapping("/movie-details/post-comment")
     public String postComment(@RequestParam String id, @RequestParam String nameLink, @RequestParam String title, @AuthenticationPrincipal UserDetails userDetails) {
         if (!customUserDetailsService.checkPre(userDetails.getAuthorities().toString())) {
-            return "redirect:/User/Payment";
+            if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+                return "redirect:/Login_Signup";
+            }
         }
         LocalDateTime currentDateTime = LocalDateTime.now();
         Users users = usersService.getUserByUsername(userDetails.getUsername());
@@ -99,14 +101,17 @@ public class MoviesController {
     @PostMapping("/movie-details/post-comment/reply-comment")
     public String replyComment(@RequestParam String MovieId,@RequestParam String id, @RequestParam String nameLink, @RequestParam String title, @AuthenticationPrincipal UserDetails userDetails) {
         if (!customUserDetailsService.checkPre(userDetails.getAuthorities().toString())) {
-            return "redirect:/User/Payment";
+            if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
+                return "redirect:/Login_Signup";
+            }
         }
+        String newTitle =title.replaceAll("^,+", "").replaceAll(",+$", "");
         LocalDateTime currentDateTime = LocalDateTime.now();
         Users users = usersService.getUserByUsername(userDetails.getUsername());
         CommentLevel commentLevel = new CommentLevel();
         commentLevel.setCommentsMovie(commentsMovieService.getById(Long.valueOf(id)).stream().toList().get(0));
         commentLevel.setUsers(users);
-        commentLevel.setTitle(title);
+        commentLevel.setTitle(newTitle);
         commentLevel.setCommentTime(currentDateTime);
         commentLevelService.save(commentLevel);
         return "redirect:/Movies/"+nameLink+"/"+MovieId;
