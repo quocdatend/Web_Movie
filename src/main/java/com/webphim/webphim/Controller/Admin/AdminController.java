@@ -3,9 +3,7 @@ package com.webphim.webphim.Controller.Admin;
 import com.webphim.webphim.Model.Admin;
 import com.webphim.webphim.Model.Users;
 import com.webphim.webphim.Reponsitory.AdminRepository;
-import com.webphim.webphim.Service.AdminService;
-import com.webphim.webphim.Service.EmailService;
-import com.webphim.webphim.Service.UsersService;
+import com.webphim.webphim.Service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +25,28 @@ public class AdminController {
     private UsersService usersService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private AdminMoviesService adminMoviesService;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private PreMovieService preMovieService;
+    @Autowired
+    private CommentsMovieService commentsMovieService;
+    @Autowired
+    private CommentLevelService commentLevelService;
     @GetMapping("")
-    public String index(){
+    public String index(Model model){
+        int totalMovie = adminMoviesService.getAllMovies().size();
+        int totalAccount = usersService.GetAllNoAtt().size();
+        int totalPreMovie = preMovieService.GetAllNoAtt().size();
+        int totalCategory = categoryService.getAllCategories().size();
+        int totalComment = commentsMovieService.getAll().size() + commentLevelService.getAll().size();
+        model.addAttribute("totalMovie", totalMovie);
+        model.addAttribute("totalAccount", totalAccount);
+        model.addAttribute("totalPreMovie", totalPreMovie);
+        model.addAttribute("totalCategory", totalCategory);
+        model.addAttribute("totalComment", totalComment);
         return "Admin/index";
     }
     @GetMapping("/Account")
