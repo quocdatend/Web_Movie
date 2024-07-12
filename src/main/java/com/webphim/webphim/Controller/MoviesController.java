@@ -270,11 +270,15 @@ public class MoviesController {
                                Model model) {
         Movies movie = adminMoviesService.findid(movieId);
         Users users = usersService.getUserByUsername(userDetails.getUsername());
-        RatingMovies newRating = new RatingMovies();
-        newRating.setMovie(movie);
-        newRating.setRating(rating);
-        newRating.setUsers(users);
-        ratingMoviesRepository.save(newRating);
+        if(ratingService.checkuserrating(users,movie) == false){
+            RatingMovies newRating = new RatingMovies();
+            newRating.setMovie(movie);
+            newRating.setRating(rating);
+            newRating.setUsers(users);
+            ratingMoviesRepository.save(newRating);
+        }else {
+            ratingService.updateRating(users,movie,rating);
+        }
         return "redirect:/Movies/movie-details/" + movieId;
     }
 }
