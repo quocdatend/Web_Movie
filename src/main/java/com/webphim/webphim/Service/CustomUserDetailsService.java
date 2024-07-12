@@ -1,6 +1,7 @@
 package com.webphim.webphim.Service;
 
 import com.webphim.webphim.Model.Admin;
+import com.webphim.webphim.Model.PaymentHistory;
 import com.webphim.webphim.Model.Users;
 import com.webphim.webphim.Reponsitory.AdminRepository;
 import com.webphim.webphim.Reponsitory.UsersRepository;
@@ -25,8 +26,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UsersRepository userRepository;
     @Autowired
     private AdminRepository adminRepository;
+    @Autowired
+    private PaymentHistoryService paymentHistoryService;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Users users = userRepository.getUserByUsername(username);
+        if(users != null) {
+            paymentHistoryService.getIfDurationIsTrue(users.getId(), users);
+        }
         Users u = userRepository.getUserByUsername(username);
         Admin a = adminRepository.getAdminByUsername(username);
 
@@ -54,10 +61,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                     .disabled(!a.isEnabled())
                     .build();
         }
-    }
-
-    public Optional<Users> findByUsername (String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username);
     }
     public boolean checkLogin(String role) {
         if(role.equals("[USER]")) {

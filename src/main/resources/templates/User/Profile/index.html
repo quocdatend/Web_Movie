@@ -88,7 +88,7 @@
                 </div>
                 <div class="transformers-right">
                   <span th:if="${user.isPre} == false">Chưa có</span>
-                  <span th:if="${user.isPre}" class="theme-btn">Đang sử dụng</span>
+                  <a th:if="${user.isPre}" href="/User/Payment_History" class="theme-btn">Đang sử dụng</a>
                 </div>
               </li>
               <li>
