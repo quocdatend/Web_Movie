@@ -4,10 +4,12 @@
  */
 package com.webphim.webphim.Controller.Login;
 
+import com.webphim.webphim.Model.PaymentHistory;
 import com.webphim.webphim.Model.Users;
 import com.webphim.webphim.Reponsitory.RoleRepository;
 import com.webphim.webphim.Service.CustomUserDetailsService;
 import com.webphim.webphim.Service.EmailService;
+import com.webphim.webphim.Service.PaymentHistoryService;
 import com.webphim.webphim.Service.UsersService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 
@@ -38,6 +41,8 @@ public class LoginSignupController {
     private UsersService usersService;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private PaymentHistoryService paymentHistoryService;
     @GetMapping("/Login_Signup")
     public String index() {
         return "Login_Signup/index";

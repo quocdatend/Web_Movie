@@ -10,9 +10,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +32,11 @@ public class UsersService {
     private RoleRepository roleRepository;
     @Autowired
     private UsersRepository usersRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
     public void saveUser(Users user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(this.passwordEncoder().encode(user.getPassword()));
         usersRepository.save(user);
     }
     public Users findUserByEmail(String email) {
@@ -66,6 +69,19 @@ public class UsersService {
                 }
         );
     }
+    public void deletePremiumRole(String username) {
+        usersRepository.findByUsername(username).ifPresentOrElse(
+                user -> {
+                    user.getRoles().add(roleRepository.findRoleById(Role.USER.value));
+                    user.getRoles().remove(roleRepository.findRoleById(Role.PRE.value));
+                    user.setPre(false);
+                    usersRepository.save(user);
+                },
+                () -> {
+                    throw new UsernameNotFoundException("User not found");
+                }
+        );
+    }
     public Optional<Users> findUserByUsername(String username) {
         return usersRepository.findByUsername(username);
     }
@@ -73,7 +89,7 @@ public class UsersService {
     @Transactional
     public void setPassUserById(Long id, String password) {
         entityManager.createQuery("UPDATE Users SET password = :password WHERE id = :id")
-                .setParameter("password", passwordEncoder.encode(password))
+                .setParameter("password", this.passwordEncoder().encode(password))
                 .setParameter("id", id)
                 .executeUpdate();
     }

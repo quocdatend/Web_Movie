@@ -1,11 +1,8 @@
 package com.webphim.webphim.Controller.User;
 
-import com.webphim.webphim.Model.ImageUser;
-import com.webphim.webphim.Model.Movies;
-import com.webphim.webphim.Model.WatchHistory;
+import com.webphim.webphim.Model.*;
 import com.webphim.webphim.Service.*;
 import com.webphim.webphim.config.PaymentConfig;
-import com.webphim.webphim.Model.Users;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -45,6 +43,8 @@ public class UserController {
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private PaymentHistoryService paymentHistoryService;
     @GetMapping("/Profile")
     public String showProfileUser(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
@@ -178,16 +178,32 @@ public class UserController {
             return "redirect:/Login_Signup";
         }
         if(vnp_TransactionStatus.equals("00")) {
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            LocalDateTime oneMonthLater  = currentDateTime.plusMonths(1);
             // thêm các tham số
             model.addAttribute("status", true);
             Users user = usersService.getUserByUsername(userDetails.getUsername());
             user.setPre(true);
             usersService.save(user);
             usersService.setPremiumRole(userDetails.getUsername());
+            PaymentHistory paymentHistory = new PaymentHistory();
+            paymentHistory.setUsers(user);
+            paymentHistory.setPrice(vnp_Amount);
+            paymentHistory.setTime(currentDateTime);
+            paymentHistory.setTimeOver(oneMonthLater);
+            paymentHistory.setType("Gói 1 Tháng");
+            paymentHistoryService.save(paymentHistory);
         } else {
             // tạo thêm các tham số khi thanh toán thất bại tại đây
             model.addAttribute("status", false);
         }
         return "User/Payment/Successfully";
+    }
+    @GetMapping("/Payment_History")
+    public String paymentHistory(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        Users users = usersService.getUserByUsername(userDetails.getUsername());
+        List<PaymentHistory> paymentHistoryList = paymentHistoryService.getByUserId(users.getId());
+        model.addAttribute("listPaymentHistory", paymentHistoryList);
+        return "User/Payment/History";
     }
 }
