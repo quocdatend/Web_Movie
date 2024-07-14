@@ -6,9 +6,11 @@ package com.webphim.webphim.Controller;
 
 import com.webphim.webphim.Model.*;
 import com.webphim.webphim.Reponsitory.RatingMoviesRepository;
+import com.webphim.webphim.Reponsitory.ReportCommentRepository;
 import com.webphim.webphim.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,6 +54,8 @@ public class MoviesController {
     private PreMovieService preMovieService;
     @Autowired
     private RatingMoviesRepository ratingMoviesRepository;
+    @Autowired
+    private ReportCommentService reportCommentService;
     @GetMapping("/movie-details/{id}")
     public String movies(@PathVariable long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
         if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
@@ -280,5 +284,45 @@ public class MoviesController {
             ratingService.updateRating(users,movie,rating);
         }
         return "redirect:/Movies/movie-details/" + movieId;
+    }
+    @GetMapping("/movie-details/post-comment/reportCommentMovies/{postId}")
+    @ResponseBody
+    public String reportCommentMovies(@PathVariable String postId, @AuthenticationPrincipal UserDetails userDetails) {
+        Users users = usersService.getUserByUsername(userDetails.getUsername());
+        LocalDateTime currentTime = LocalDateTime.now();
+        List<ReportComment> checkReportComment = reportCommentService.getByCommentsMoviesId(Long.valueOf(postId));
+        if(!checkReportComment.isEmpty()) {
+            if(checkReportComment.get(0).getUsers().equals(users)) {
+                return "Bạn đã báo cáo vi phạm này!";
+            } else {
+                return "Ghi nhận Báo cáo vi phạm của bạn!";
+            }
+        }
+        ReportComment reportComment = new ReportComment();
+        reportComment.setCommentsMovie(commentsMovieService.getById(Long.valueOf(postId)).stream().toList().get(0));
+        reportComment.setTime(currentTime);
+        reportComment.setUsers(users);
+        reportCommentService.save(reportComment);
+        return "Ghi nhận Báo cáo vi phạm của bạn!";
+    }
+    @GetMapping("/movie-details/post-comment/reportCommentLevel/{postId}")
+    @ResponseBody
+    public String reportCommentLevel(@PathVariable String postId, @AuthenticationPrincipal UserDetails userDetails) {
+        Users users = usersService.getUserByUsername(userDetails.getUsername());
+        LocalDateTime currentTime = LocalDateTime.now();
+        List<ReportComment> checkReportComment = reportCommentService.getByCommentLevelId(Long.valueOf(postId));
+        if(!checkReportComment.isEmpty()) {
+            if(checkReportComment.get(0).getUsers().equals(users)) {
+                return "Bạn đã báo cáo vi phạm này!";
+            } else {
+                return "Ghi nhận Báo cáo vi phạm của bạn!";
+            }
+        }
+        ReportComment reportComment = new ReportComment();
+        reportComment.setCommentLevel(commentLevelService.getById(Long.valueOf(postId)).stream().toList().get(0));
+        reportComment.setTime(currentTime);
+        reportComment.setUsers(users);
+        reportCommentService.save(reportComment);
+        return "Ghi nhận Báo cáo vi phạm của bạn!";
     }
 }
