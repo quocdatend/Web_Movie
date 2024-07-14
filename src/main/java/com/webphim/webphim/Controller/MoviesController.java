@@ -301,7 +301,7 @@ public class MoviesController {
         ReportComment reportComment = new ReportComment();
         reportComment.setCommentsMovie(commentsMovieService.getById(Long.valueOf(postId)).stream().toList().get(0));
         reportComment.setTime(currentTime);
-        reportComment.setUsers(users);
+        reportComment.setUsers(commentsMovieService.getById(Long.valueOf(postId)).stream().toList().get(0).getUsers());
         reportCommentService.save(reportComment);
         return "Ghi nhận Báo cáo vi phạm của bạn!";
     }
@@ -321,7 +321,7 @@ public class MoviesController {
         ReportComment reportComment = new ReportComment();
         reportComment.setCommentLevel(commentLevelService.getById(Long.valueOf(postId)).stream().toList().get(0));
         reportComment.setTime(currentTime);
-        reportComment.setUsers(users);
+        reportComment.setUsers(commentLevelService.getById(Long.valueOf(postId)).stream().toList().get(0).getUsers());
         reportCommentService.save(reportComment);
         return "Ghi nhận Báo cáo vi phạm của bạn!";
     }
