@@ -69,7 +69,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         return false;
     }
     public boolean checkPre(String role) {
-//        System.out.println(role);
         if(role.equals("[PRE]")) {
             return true;
         }
