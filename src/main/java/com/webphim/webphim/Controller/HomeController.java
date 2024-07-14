@@ -61,7 +61,6 @@ public class HomeController {
                         @RequestParam(defaultValue = "0") int page,
                         @RequestParam(defaultValue = "5") int size,
                         @AuthenticationPrincipal UserDetails userDetails){
-        System.out.println(userDetails.getAuthorities().toString());
         if (!customUserDetailsService.checkPre(userDetails.getAuthorities().toString())) {
             if (!customUserDetailsService.checkLogin(userDetails.getAuthorities().toString())) {
                 return "redirect:/Login_Signup";

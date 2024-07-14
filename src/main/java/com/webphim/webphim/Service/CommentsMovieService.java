@@ -50,4 +50,5 @@ public class CommentsMovieService {
         PageRequest pageRequest =PageRequest.of(pageNo,pageSize);
         return commentsMovieRepository.findAll(pageRequest);
     }
+    public void deleteByCommentsMovie(CommentsMovie commentsMovie) {commentsMovieRepository.delete(commentsMovie);}
 }
