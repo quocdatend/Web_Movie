@@ -35,6 +35,8 @@ public class AdminController {
     private CommentsMovieService commentsMovieService;
     @Autowired
     private CommentLevelService commentLevelService;
+    @Autowired
+    private ReportCommentService reportCommentService;
     @GetMapping("")
     public String index(Model model){
         int totalMovie = adminMoviesService.getAllMovies().size();
@@ -42,11 +44,13 @@ public class AdminController {
         int totalPreMovie = preMovieService.GetAllNoAtt().size();
         int totalCategory = categoryService.getAllCategories().size();
         int totalComment = commentsMovieService.getAll().size() + commentLevelService.getAll().size();
+        int totalReportComment = reportCommentService.getAll().size();
         model.addAttribute("totalMovie", totalMovie);
         model.addAttribute("totalAccount", totalAccount);
         model.addAttribute("totalPreMovie", totalPreMovie);
         model.addAttribute("totalCategory", totalCategory);
         model.addAttribute("totalComment", totalComment);
+        model.addAttribute("totalReportComment", totalReportComment);
         return "Admin/index";
     }
     @GetMapping("/Account")

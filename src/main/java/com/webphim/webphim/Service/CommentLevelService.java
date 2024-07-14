@@ -42,4 +42,5 @@ public class CommentLevelService {
         return lists;
     }
     public List<CommentLevel> getAll() {return commentLevelRepository.findAll();}
+    public void deleteByCommentLevel(CommentLevel commentLevel) {commentLevelRepository.delete(commentLevel);}
 }
