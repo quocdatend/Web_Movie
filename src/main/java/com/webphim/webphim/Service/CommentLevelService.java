@@ -18,6 +18,7 @@ public class CommentLevelService {
     public void save(CommentLevel commentLevel) {
         commentLevelRepository.save(commentLevel);
     }
+    public Optional<CommentLevel> getById(Long id) {return commentLevelRepository.findById(id);}
     public List<CommentLevel> getChildCommentsByCommentsMovieId(long id) {
         List<CommentLevel> commentLevelList = commentLevelRepository.findByCommentsMovieId(id);
         return commentLevelList;

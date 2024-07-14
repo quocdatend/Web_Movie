@@ -57,6 +57,8 @@
             <span><a th:onclick="'likePost('+${comment.id}+')'"><i class="icofont icofont-thumbs-up" style="position: static;"></i></a> <span th:id="'like-count-'+${comment.id}" th:text="${comment.likes}"></span></span>
             <span>  |  </span>
             <span><a th:onclick="'dislikePost('+${comment.id}+')'"><i class="icofont icofont-thumbs-down" style="position: static;"></i></a> <span th:id="'dislike-count-'+${comment.id}" th:text="${comment.dislikes}"></span></span>
+            <span>  |  </span>
+            <span><a th:onclick="'reportCommentMovies('+${comment.id}+')'">Report</a></span>
           </p>
           <div class="row" th:each="childComment : ${listChildComment}" >
             <div class="col-lg-2" th:if="${childComment.getCommentsMovie().getId()} == ${comment.id}">
@@ -80,6 +82,8 @@
                   <span><a th:onclick="'likeChildPost('+${childComment.id}+')'"><i class="icofont icofont-thumbs-up" style="position: static;"></i></a> <span th:id="'like-count-child-'+${childComment.id}" th:text="${childComment.likes}"></span></span>
                   <span>  |  </span>
                   <span><a th:onclick="'dislikeChildPost('+${childComment.id}+')'"><i class="icofont icofont-thumbs-down" style="position: static;"></i></a> <span th:id="'dislike-count-child-'+${childComment.id}" th:text="${childComment.dislikes}"></span></span>
+                  <span>  |  </span>
+                  <span><a th:onclick="'reportCommentLevel('+${childComment.id}+')'">Report</a></span>
                 </p>
                 <div th:id="'content-reply-child-'+${childComment.id}" style="display:none;">
                   <textarea placeholder="Type Here Message" name="title"></textarea>
@@ -112,6 +116,24 @@
     </div>
   </form>
   <script>
+        function reportCommentMovies(postId) {
+            $.ajax({
+                url: '/Movies/movie-details/post-comment/reportCommentMovies/' + postId,
+                type: 'GET',
+                success: function(data) {
+                  alert(data);
+                }
+            });
+        }
+        function reportCommentLevel(postId) {
+            $.ajax({
+                url: '/Movies/movie-details/post-comment/reportCommentLevel/' + postId,
+                type: 'GET',
+                success: function(data) {
+                  alert(data);
+                }
+            });
+        }
 		function contentReply(postId) {
 			var element = document.getElementById('content-reply-' + postId);
 			if (element.style.display === "none") {
